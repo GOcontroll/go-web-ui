@@ -2,11 +2,6 @@ __pycache__/
 dist/
 *.egg-info
 .vscode/
-.venv
+.venv/
 *.pem
 .pybuild/
-debian/.debhelper/
-debian/debhelper-build-stamp
-debian/files
-debian/python3-*
-debian/moduline-webui*

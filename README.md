@@ -1,27 +1,52 @@
-# Moduline WebUI
+# go-web-ui
 
-A web based UI for GOcontroll Moduline controllers.  
-Configure interfaces and services, check errorcodes or see general system information.
+Web-based configuration UI for GOcontroll Moduline controllers.
 
-## Installing
+## Description
 
-Download the desired version from the github releases, then  
-`pip install /path/to/your-version.tar.gz`  
-If your application has a DTC decoding package don't forget to install this one too
+`go-web-ui` provides a browser-accessible interface to configure and monitor GOcontroll Moduline controllers. It allows users to:
+
+- View general system information and controller status
+- Configure network interfaces (Ethernet, WiFi, WWAN)
+- Manage and control systemd services
+- Read and clear diagnostic trouble codes (DTCs)
+- Configure Simulink model parameters
+
+The web server listens on port 5000 by default and is secured with a passkey.
+
+## Configuration
+
+The configuration file is located at `/etc/go_webui.conf`:
+
+```ini
+# IP the server listens on
+ip=0.0.0.0
+# Port the server listens on
+port=5000
+# SHA256 hash of the passkey (default: "Moduline")
+pass_hash=70ee82b31794ab8fc317d80b7d20eef00f64a97459e3edd74adacafcc6bfd9be
+# Comma-separated list of services not allowed to be controlled via the UI
+service_blacklist=
+# Generate a new SSL certificate/key on startup
+ssl_gen=false
+# Path to SSL key (ignored if ssl_gen=true)
+ssl_key=
+# Path to SSL certificate (ignored if ssl_gen=true)
+ssl_cert=
+```
 
 ## Development
 
-for development set up a venv in the project, enter it and install the necessary packages:  
-`python3 -m venv .venv` #Create the venv  
-`source .venv/bin/activate` #Enter the venv  
+Set up a virtual environment and install in editable mode:
 
-then run  
-`pip install --editable .`  
-to install the module in your venv while using the regular project files as the source
+```sh
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --editable ".[dev]"
+go-webui --passkey test
+```
 
-then run  
-`go-webui --passkey test`  
-to launch the webserver with the passkey 'test'
+## Changelog
 
-`python3 setup.py sdist`  
-to build the package for distribution
+### v1.3.0
+- Initial release on apt.gocontroll.com

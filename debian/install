@@ -1,2 +1,0 @@
-debian/go-webui.service /lib/systemd/system
-debian/go_webui.conf /etc/

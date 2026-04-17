@@ -1,0 +1,131 @@
+name: Build and publish go-web-ui package
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Install build dependencies
+        run: sudo apt-get install -y dpkg-dev
+
+      - name: Build .deb
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          PACKAGE=go-web-ui
+          ARCH=all
+          BUILD="${RUNNER_TEMP}/${PACKAGE}_${VERSION}_${ARCH}"
+          DIST="${RUNNER_TEMP}/dist"
+
+          mkdir -p "${BUILD}/DEBIAN" \
+                   "${BUILD}/usr/bin" \
+                   "${BUILD}/usr/lib/python3/dist-packages" \
+                   "${BUILD}/usr/lib/systemd/system" \
+                   "${BUILD}/etc" \
+                   "${DIST}"
+
+          cp -r ModulineWebUI "${BUILD}/usr/lib/python3/dist-packages/"
+
+          cat > "${BUILD}/usr/bin/go-webui" << 'SCRIPT'
+          #!/usr/bin/python3
+          from ModulineWebUI.__main__ import execute_script
+          execute_script()
+          SCRIPT
+          chmod 755 "${BUILD}/usr/bin/go-webui"
+
+          cat > "${BUILD}/usr/bin/go-print-dtcs" << 'SCRIPT'
+          #!/usr/bin/python3
+          from ModulineWebUI.diag import print_errors
+          print_errors()
+          SCRIPT
+          chmod 755 "${BUILD}/usr/bin/go-print-dtcs"
+
+          install -Dm644 debian/go-webui.service \
+            "${BUILD}/usr/lib/systemd/system/go-webui.service"
+
+          install -Dm644 debian/go_webui.conf \
+            "${BUILD}/etc/go_webui.conf"
+
+          cat > "${BUILD}/DEBIAN/control" << CONTROL
+          Package: ${PACKAGE}
+          Version: ${VERSION}
+          Architecture: ${ARCH}
+          Maintainer: GOcontroll B.V. <info@gocontroll.com>
+          Depends: python3, python3-microdot, python3-jwt, python3-netifaces, python3-setuptools
+          Section: misc
+          Priority: optional
+          Homepage: https://gocontroll.com
+          Description: Web UI for configuring GOcontroll Moduline controllers
+           Browser-accessible interface to configure network interfaces, manage
+           services, read diagnostic trouble codes, and monitor controller status.
+          CONTROL
+
+          cat > "${BUILD}/DEBIAN/postinst" << 'POSTINST'
+          #!/bin/bash
+          set -e
+          case "$1" in
+              configure)
+                  systemctl daemon-reload
+                  systemctl enable go-webui.service
+                  ;;
+          esac
+          POSTINST
+          chmod 755 "${BUILD}/DEBIAN/postinst"
+
+          cat > "${BUILD}/DEBIAN/prerm" << 'PRERM'
+          #!/bin/bash
+          set -e
+          case "$1" in
+              remove|purge)
+                  systemctl stop go-webui.service || true
+                  systemctl disable go-webui.service || true
+                  ;;
+          esac
+          PRERM
+          chmod 755 "${BUILD}/DEBIAN/prerm"
+
+          cat > "${BUILD}/DEBIAN/postrm" << 'POSTRM'
+          #!/bin/bash
+          set -e
+          case "$1" in
+              purge)
+                  systemctl daemon-reload || true
+                  ;;
+          esac
+          POSTRM
+          chmod 755 "${BUILD}/DEBIAN/postrm"
+
+          dpkg-deb -Zxz --build --root-owner-group "${BUILD}" \
+            "${DIST}/${PACKAGE}_${VERSION}_${ARCH}.deb"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ runner.temp }}/dist/go-web-ui_${{ steps.version.outputs.version }}_all.deb
+          generate_release_notes: true
+
+      - name: Trigger go-apt index rebuild
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH_TOKEN }}
+          repository: GOcontroll/go-apt
+          event-type: rebuild-index
+          client-payload: |
+            {
+              "package": "go-web-ui",
+              "version": "${{ steps.version.outputs.version }}",
+              "arch": "all",
+              "deb_url": "https://github.com/GOcontroll/go-web-ui/releases/download/${{ github.ref_name }}/go-web-ui_${{ steps.version.outputs.version }}_all.deb"
+            }

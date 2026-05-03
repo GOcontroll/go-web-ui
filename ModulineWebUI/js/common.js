@@ -85,3 +85,17 @@ function closeModal(overlay) {
   if (overlay._escHandler) document.removeEventListener("keydown", overlay._escHandler);
   overlay.remove();
 }
+
+// ---------------------------------------------------------------------------
+// Append the installed package version to the page footer (if present).
+// ---------------------------------------------------------------------------
+document.addEventListener("DOMContentLoaded", async () => {
+  const footer = document.querySelector(".app-footer");
+  if (!footer) return;
+  try {
+    const resp = await (await fetch("/api/get_webui_version")).json();
+    if (resp && resp.version) {
+      footer.textContent = footer.textContent.trimEnd() + "  ·  v" + resp.version;
+    }
+  } catch (_) { /* keep base footer text on failure */ }
+});

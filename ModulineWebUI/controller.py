@@ -139,6 +139,29 @@ async def get_software(req: Request, session: Session):
         return json.dumps({"err": f"Could not get version\n{ex}"})
 
 
+_webui_version: "str | None" = None
+
+
+@app.get("/api/get_webui_version")
+@with_session
+@auth
+async def get_webui_version(req: Request, session: Session):
+    """Return the installed go-web-ui Debian package version (cached)."""
+    global _webui_version
+    if _webui_version is None:
+        try:
+            res = subprocess.run(
+                ["dpkg-query", "-W", "-f=${Version}", "go-web-ui"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            _webui_version = res.stdout.strip() if res.returncode == 0 else ""
+        except Exception:
+            _webui_version = ""
+    return json.dumps({"version": _webui_version})
+
+
 @app.get("/api/get_serial_number")
 @with_session
 @auth

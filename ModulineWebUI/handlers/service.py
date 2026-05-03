@@ -15,6 +15,7 @@ services = [
     "go-auto-shutdown",
     "gadget-getty@ttyGS0",
     "getty@ttymxc2",
+    "go-webui",
 ]
 
 service_blacklist = []

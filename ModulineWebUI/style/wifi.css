@@ -1,0 +1,214 @@
+/* Page-specific styling for the Wi-Fi page. Base styles in main.css. */
+
+/* ----- Mode picker (two big radio cards side-by-side) ----- */
+.mode-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+.mode-option {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 18px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--white);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+.mode-option:hover {
+  border-color: var(--border2);
+  background: var(--bg);
+}
+.mode-option input[type="radio"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+.mode-option:has(input:checked) {
+  border-color: var(--brand);
+  background: var(--brand-light);
+  box-shadow: 0 0 0 3px var(--brand-dim);
+}
+.mode-option .mode-content {
+  flex: 1;
+  min-width: 0;
+}
+.mode-option .mode-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+.mode-option .mode-desc {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* ----- Scan / network list ----- */
+.scan-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.scan-status {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.network-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--white);
+}
+.network-list:empty::before {
+  content: "Click 'Scan' to discover networks.";
+  display: block;
+  padding: 22px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+.network-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
+  transition: background .15s;
+}
+.network-row:last-child { border-bottom: none; }
+.network-row:hover { background: var(--brand-light); }
+.network-row .signal-bars {
+  flex-shrink: 0;
+  width: 20px;
+  height: 14px;
+  display: inline-block;
+}
+.network-row .signal-bars rect { fill: var(--border2); }
+.network-row .signal-bars rect.on { fill: var(--brand); }
+.network-row .net-info {
+  flex: 1;
+  min-width: 0;
+}
+.network-row .net-ssid {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--black);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.network-row .net-meta {
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+.network-row .net-actions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.network-row.connected {
+  background: var(--brand-light);
+}
+.network-row.connected .net-ssid {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+/* ----- Active connection card ----- */
+.active-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 6px 0;
+  user-select: none;
+}
+.active-summary:hover .net-ssid { color: var(--brand); }
+.active-summary .chevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  transition: transform .15s;
+  color: var(--muted);
+}
+.active-summary[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+.active-details {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: none;
+}
+.active-summary[aria-expanded="true"] + .active-details {
+  display: block;
+}
+.active-details .info-row {
+  padding: 8px 0;
+  font-size: 13px;
+}
+.active-details .info-row:last-child { border-bottom: none; }
+.active-details .actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* ----- Saved networks list (greyed-out look) ----- */
+.saved-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--white);
+}
+.saved-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
+  opacity: .7;
+}
+.saved-row:last-child { border-bottom: none; }
+.saved-row:hover { opacity: 1; background: var(--bg); }
+.saved-row .net-info { flex: 1; min-width: 0; }
+.saved-row .net-ssid {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--black);
+}
+.saved-row .net-meta {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.saved-row .net-actions {
+  flex-shrink: 0;
+  display: flex;
+  gap: 6px;
+}
+
+/* Modal-internal form spacing for password prompt */
+.modal-body .form-group { margin-top: 0; }
+.modal-body .form-group + .form-group { margin-top: 14px; }

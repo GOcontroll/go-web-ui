@@ -1,30 +1,16 @@
-#fault-table>thead {
-  background-color: white;
-}
+/* Page-specific overrides for the faults page.
+   Base table styling lives in main.css. */
 
-#fault-codes>tr {
-  background-color: white;
-  /* border: #c6c6c6 solid 3px; */
-  word-break: break-word;
+#fault-table .col-select {
+  width: 48px;
+  text-align: center;
 }
-
-#fault-table>thead>tr>td:nth-child(2) {
-  text-align: center
-}
-
-#fault-codes>tr:nth-child(2n -1)>td {
-  background-color: #e94f242c;
-}
-
-table#fault-table {
-  /* border: aliceblue solid; */
-  width: auto;
-}
-
-td.fault-code-fc {
+#fault-table td:first-child {
+  font-family: var(--mono);
+  white-space: nowrap;
   min-width: 80px;
 }
-
-td.fault-code-desc {
+#fault-table td:nth-child(2) {
   width: 100%;
+  word-break: break-word;
 }

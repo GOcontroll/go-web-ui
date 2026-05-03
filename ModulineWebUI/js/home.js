@@ -1,8 +1,11 @@
 document.addEventListener('DOMContentLoaded', async function () {
   const sn_request = fetch("/api/get_serial_number");
   const software_request = fetch('/api/get_software');
+  const platform_request = fetch("/api/get_platform");
   const hardware_request = fetch("/api/get_hardware");
+  const rootfs_request = fetch("/api/get_rootfs_build");
   const simulink_request = fetch('/api/get_sim_ver');
+
   var res = await (await sn_request).json();
   if (res.err) {
     document.getElementById("serial_number").innerText = "Not found";
@@ -10,6 +13,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   } else {
     document.getElementById("serial_number").innerText = res.sn;
   }
+
   res = await (await software_request).json();
   if (res.err) {
     document.getElementById("controller_software").innerText = "Not found";
@@ -17,13 +21,39 @@ document.addEventListener('DOMContentLoaded', async function () {
   } else {
     document.getElementById("controller_software").innerText = res.version;
   }
-  res = await (await hardware_request).json();
-  if (res.err) {
-    document.getElementById("controller_hardware").innerText = "Not found";
-    console.log(res.err);
+
+  // Prefer platform; fall back to hardware when platform is unavailable.
+  const platform_res = await (await platform_request).json();
+  if (!platform_res.err && platform_res.platform) {
+    document.getElementById("controller_hardware").innerText = platform_res.platform;
   } else {
-    document.getElementById("controller_hardware").innerText = res.hardware;
+    if (platform_res.err) console.log(platform_res.err);
+    const hardware_res = await (await hardware_request).json();
+    if (hardware_res.err) {
+      document.getElementById("controller_hardware").innerText = "Not found";
+      console.log(hardware_res.err);
+    } else {
+      document.getElementById("controller_hardware").innerText = hardware_res.hardware;
+    }
   }
+
+  // Rootfs build — combine sha + date + variant/arch into one line
+  const rootfs_res = await (await rootfs_request).json();
+  if (rootfs_res.err) {
+    document.getElementById("rootfs_build").innerText = "Not found";
+    console.log(rootfs_res.err);
+  } else {
+    const main = [];
+    if (rootfs_res.build_sha)  main.push(rootfs_res.build_sha);
+    if (rootfs_res.build_date) main.push(rootfs_res.build_date.split("T")[0]);
+    let line = main.join(" · ");
+    const ctx = [];
+    if (rootfs_res.variant) ctx.push(rootfs_res.variant);
+    if (rootfs_res.rootfs)  ctx.push(rootfs_res.rootfs);
+    if (ctx.length) line += ` (${ctx.join(" · ")})`;
+    document.getElementById("rootfs_build").innerText = line || "—";
+  }
+
   res = await (await simulink_request).json();
   if (res.err) {
     document.getElementById("simulink_version").innerText = "Not found";
@@ -42,20 +72,46 @@ function alert_class_switch(elem, newClass) {
   }, 500);
 }
 
+function confirmPasswordChange() {
+  return new Promise(resolve => {
+    let resolved = false;
+    const safe = v => { if (!resolved) { resolved = true; resolve(v); } };
+    const overlay = showModal({
+      title: "Change Web UI password?",
+      variant: "warn",
+      body: `<p>You are about to change the password used to log in to this Web UI on this controller.</p>
+             <p><strong>If you lose this password the Web UI is no longer accessible.</strong>
+                Recovery requires alternative access to the controller (Ethernet shell, USB console, …) to reset
+                <code>pass_hash</code> in <code>/etc/go_webui.conf</code> manually.</p>
+             <p>Make sure you remember the new password before continuing.</p>`,
+      actions: [
+        { label: "Cancel",          onClick: () => safe(false) },
+        { label: "Change password", primary: true, onClick: () => safe(true) },
+      ],
+    });
+    const obs = new MutationObserver(() => {
+      if (!overlay.parentNode) { obs.disconnect(); safe(false); }
+    });
+    obs.observe(document.body, { childList: true });
+  });
+}
+
 async function set_passkey() {
   const pass1 = document.getElementById("passkey1");
   const pass2 = document.getElementById("passkey2");
   const result = document.getElementById("new_passkey_result");
   if (pass1.value != pass2.value) {
-    result.innerText = "Could not set new passkey, entries don't match.";
+    result.innerText = "Could not change password: entries don't match.";
     alert_class_switch(result, "info");
     return;
   }
   if (!(pass1.value.length > 6)) {
-    result.innerText = "Could not set new passkey, new passkey must be longer than 6 characters.";
+    result.innerText = "Could not change password: must be longer than 6 characters.";
     alert_class_switch(result, "info");
     return;
   }
+  const ok = await confirmPasswordChange();
+  if (!ok) return;
   try {
     const response = await post_json("/api/set_passkey", { "passkey": pass1.value });
     if (response.err) {
@@ -64,16 +120,52 @@ async function set_passkey() {
       console.log(response.deets);
       return;
     }
-    result.innerText = "Successfully changed the passkey!"
+    result.innerText = "Password changed. Use the new password on your next login.";
     pass1.value = "";
     pass2.value = "";
     alert_class_switch(result, "ok");
     return
   } catch (err) {
-    result.innerText = "Could not set new passkey, unexpected response from server";
+    result.innerText = "Could not change password: unexpected response from server.";
     alert_class_switch(result, "fail");
     console.log(err);
     return;
+  }
+}
+
+async function download_a2l() {
+  const url = "/api/GOcontroll_Linux.a2l";
+  try {
+    const resp = await fetch(url);
+    if (resp.ok) {
+      const blob = await resp.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = "GOcontroll_Linux.a2l";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+      return;
+    }
+    let msg = "The .a2l file could not be downloaded.";
+    try {
+      const j = await resp.json();
+      if (j && j.err) msg = j.err;
+    } catch (_) { /* response was not JSON */ }
+    showModal({
+      title: "a2l file unavailable",
+      variant: "warn",
+      body: `<p>${msg}</p>`,
+    });
+  } catch (err) {
+    showModal({
+      title: "Download failed",
+      variant: "danger",
+      body: `<p>The browser could not reach the server.</p>
+             <p class="muted mono" style="font-size:12px;">${String(err)}</p>`,
+    });
   }
 }
 

@@ -1,0 +1,95 @@
+/* Page-specific styling for the CAN page. Base styles in main.css. */
+
+.can-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+}
+/* Cancel the global ".card + .card" stacking margin inside the grid —
+   gap handles spacing here, the margin would offset cards in subsequent grid cells. */
+.can-grid > .card + .card { margin-top: 0; }
+
+.can-card .can-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  gap: 10px;
+}
+.can-card .can-card-head .name {
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--mono);
+  color: var(--black);
+}
+
+.can-card .bitrate-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.can-card .bitrate-row .form-group {
+  flex: 1;
+  min-width: 140px;
+  margin-top: 0;
+}
+.can-card .bitrate-row .btn {
+  flex-shrink: 0;
+}
+
+.busload-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.busload-chart {
+  flex: 1;
+  height: 44px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: block;
+}
+.busload-line {
+  fill: none;
+  stroke: var(--brand);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+.busload-fill {
+  fill: var(--brand-dim);
+  stroke: none;
+}
+.busload-value {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--black);
+  min-width: 48px;
+  text-align: right;
+}
+.busload-axis {
+  font-size: 10px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-family: var(--mono);
+}
+
+.can-card.absent {
+  opacity: .55;
+}
+.can-card.absent .busload-chart {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--bg),
+    var(--bg) 6px,
+    var(--white) 6px,
+    var(--white) 12px
+  );
+}

@@ -2,13 +2,12 @@
 <html lang="en">
 
 <head>
-  <title>GOcontroll · Wi-Fi</title>
+  <title>GOcontroll · Configuration parameters</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/style/main.css">
-  <link rel="stylesheet" href="/style/wifi.css">
   <script src="/js/common.js" defer></script>
-  <script src="/js/wifi.js" defer></script>
+  <script src="/js/parameters.js" defer></script>
 </head>
 
 <body>
@@ -18,7 +17,7 @@
         <img class="logo" src="/assets/logo.svg" alt="GOcontroll">
       </a>
       <div class="divider"></div>
-      <span class="app-title">Wi-Fi</span>
+      <span class="app-title">Configuration parameters</span>
       <div class="spacer"></div>
       <div class="header-actions">
         <form action="/logout" method="post" style="margin:0">
@@ -48,7 +47,7 @@
             <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25H6.75A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 7.5h.008v.008H7.5V7.5Zm0 4.5h.008v.008H7.5V12Zm0 4.5h.008v.008H7.5v-.008Zm4.5-9h.008v.008H12V7.5Zm0 4.5h.008v.008H12V12Zm0 4.5h.008v.008H12v-.008Zm4.5-9h.008v.008h-.008V7.5Zm0 4.5h.008v.008h-.008V12Zm0 4.5h.008v.008h-.008v-.008Z"/></svg>
             <span class="nav-label">CAN</span>
           </a>
-          <a class="nav-item active" href="/static/wifi.html">
+          <a class="nav-item" href="/static/wifi.html">
             <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M8.288 15.038a5.25 5.25 0 0 1 7.424 0M5.106 11.856c3.807-3.808 9.98-3.808 13.788 0M1.924 8.674c5.565-5.565 14.587-5.565 20.152 0M12.53 18.22l-.53.53-.53-.53a.75.75 0 0 1 1.06 0Z"/></svg>
             <span class="nav-label">Wi-Fi</span>
           </a>
@@ -60,7 +59,7 @@
             <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"/></svg>
             <span class="nav-label">Faults</span>
           </a>
-          <a class="nav-item" href="/static/parameters.html">
+          <a class="nav-item active" href="/static/parameters.html">
             <svg class="nav-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"/></svg>
             <span class="nav-label">Configuration</span>
           </a>
@@ -68,129 +67,37 @@
       </aside>
 
       <main class="main">
-        <h1 class="page-title">Wi-Fi settings</h1>
-
-        <section class="card">
-          <div class="info-row" style="border-bottom:none;padding:0">
-            <span class="label">Wi-Fi radio</span>
-            <label class="switch">
-              <input id="wifi" type="checkbox" onclick="set_wifi()">
-              <span class="slider"></span>
-            </label>
-          </div>
-        </section>
-
-        <section class="card">
-          <div class="card-title">Mode</div>
-          <div class="mode-picker">
-            <label class="mode-option">
-              <input type="radio" name="wifi-mode" value="ap">
-              <div class="mode-content">
-                <div class="mode-title">Access Point</div>
-                <div class="mode-desc">The controller broadcasts its own Wi-Fi network. Devices connect directly to the controller. (Default factory mode — typically <code>GOcontroll-AP-xxxx</code>.)</div>
-              </div>
-            </label>
-            <label class="mode-option">
-              <input type="radio" name="wifi-mode" value="wifi">
-              <div class="mode-content">
-                <div class="mode-title">Connect to network</div>
-                <div class="mode-desc">The controller joins an existing Wi-Fi network as a client. The connection is saved and restored automatically after a reboot.</div>
-              </div>
-            </label>
-          </div>
-        </section>
-
-        <section class="card" id="ap-card">
-          <div class="card-title">Access Point configuration</div>
-          <div class="form-group">
-            <label for="ap_ssid_current">SSID</label>
-            <input id="ap_ssid_current" type="text" placeholder="e.g. GOcontroll-AP-fresh">
-          </div>
-          <div class="btn-row">
-            <button class="btn primary" type="button" onclick="set_ap_ssid()">Change SSID</button>
-          </div>
-          <p id="set_ap_ssid_result" class="alert-box"></p>
-
-          <div class="form-group" style="margin-top:18px;">
-            <label for="ap_pass">New password</label>
-            <div style="display:flex;align-items:center;gap:6px;">
-              <input id="ap_pass" type="password" placeholder="At least 8 characters">
-              <button tabindex="-1" id="vis_pass" onclick="toggle_ap_pass()" type="button">
-                <img src="/assets/visibility.png" alt="show">
-              </button>
-            </div>
-          </div>
-          <div class="btn-row">
-            <button class="btn primary" type="button" onclick="set_ap_pass()">Change password</button>
-          </div>
-          <p id="set_ap_pass_result" class="alert-box"></p>
-        </section>
-
-        <section class="card" id="active-card" style="display:none;">
-          <div class="card-title">Connected</div>
-          <div class="active-summary" id="active-summary" role="button" tabindex="0" aria-expanded="false" onclick="toggleActiveDetails()">
-            <span id="active-bars"></span>
-            <div class="net-info">
-              <div class="net-ssid" id="active-ssid">…</div>
-              <div class="net-meta" id="active-meta">—</div>
-            </div>
-            <svg class="chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"/>
-            </svg>
-          </div>
-          <div class="active-details" id="active-details">
-            <div class="info-row">
-              <span class="label">SSID</span>
-              <span class="value" id="active-detail-ssid">—</span>
-            </div>
-            <div class="info-row">
-              <span class="label">IP address</span>
-              <span class="value" id="active-detail-ip">—</span>
-            </div>
-            <div class="info-row">
-              <span class="label">MAC (BSSID)</span>
-              <span class="value" id="active-detail-bssid">—</span>
-            </div>
-            <div class="info-row">
-              <span class="label">Signal strength</span>
-              <span class="value" id="active-detail-signal">—</span>
-            </div>
-            <div class="info-row">
-              <span class="label">Security</span>
-              <span class="value" id="active-detail-security">—</span>
-            </div>
-            <div class="info-row">
-              <span class="label">Frequency</span>
-              <span class="value" id="active-detail-freq">—</span>
-            </div>
-            <div class="info-row">
-              <span class="label">Link rate</span>
-              <span class="value" id="active-detail-rate">—</span>
-            </div>
-            <div class="actions">
-              <button class="btn danger" type="button" id="active-forget-btn" onclick="forgetActive()">Forget this network</button>
-            </div>
-          </div>
-        </section>
-
-        <section class="card" id="saved-card" style="display:none;">
-          <div class="card-title">Saved networks</div>
-          <div class="saved-list" id="saved-list"></div>
-        </section>
-
-        <section class="card" id="client-card" style="display:none;">
-          <div class="card-title">Available networks</div>
-          <div class="scan-toolbar">
-            <button class="btn primary" id="scan-btn" type="button" onclick="scanNetworks()">Scan</button>
-            <span class="scan-status" id="scan-status"></span>
-          </div>
-          <div class="network-list" id="network-list"></div>
-        </section>
+        <h1 class="page-title">Configuration parameters</h1>
+        <div class="table-card">
+          <table id="param-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody id="parameters"></tbody>
+          </table>
+        </div>
+        <div class="btn-row">
+          <button class="btn primary" type="button" onclick="save_parameters()">Save parameters</button>
+        </div>
       </main>
     </div>
 
     <footer class="app-footer">© 2026 GOcontroll — Moduline Web - UI</footer>
   </div>
+
+  <template id="parameter">
+    <tr class="parameter">
+      <td class="param-name"></td>
+      <td>
+        <form action="" onsubmit="return save_parameters(event)">
+          <input class="param-val" type="text" inputmode="decimal" />
+        </form>
+      </td>
+    </tr>
+  </template>
 </body>
 
 </html>

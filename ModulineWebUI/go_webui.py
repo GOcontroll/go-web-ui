@@ -10,8 +10,6 @@ from argparse import ArgumentParser, BooleanOptionalAction
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 
-import pkg_resources
-
 from ModulineWebUI.app import app, set_passkey
 from ModulineWebUI.conf import create_default_conf, get_conf
 from ModulineWebUI.handlers.service import set_service_blacklist
@@ -62,7 +60,7 @@ def setup_logging():
 def get_args():
     parser = ArgumentParser(
         prog="go-webui",
-        description=f"""go-webui V{pkg_resources.require("ModulineWebUI")[0].version}\n
+        description="""go-webui\n
         This program provides a web based interface for GOcontroll Moduline controllers""",
         epilog="Any argument passed will override the value set in /etc/go_webui.conf",
         add_help=True,
@@ -129,6 +127,7 @@ if __name__ == "__main__":
     from ModulineWebUI.ethernet import *
     from ModulineWebUI.wifi import *
     from ModulineWebUI.wwan import *
+    from ModulineWebUI.can import *
 
     # process /etc/go_webui.conf
     conf = {}

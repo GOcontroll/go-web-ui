@@ -67,7 +67,15 @@ async def get_sim_ver(req: Request, session: Session):
 @with_session
 @auth
 async def a2l_down(req: Request, session: Session):
-    return send_file("/usr/simulink/GOcontroll_Linux.a2l")
+    path = "/usr/simulink/GOcontroll_Linux.a2l"
+    if not os.path.isfile(path):
+        return (
+            json.dumps({"err": "No .a2l file is present on this controller. "
+                               "It is generated when a Simulink application is built and uploaded."}),
+            404,
+            {"Content-Type": "application/json"},
+        )
+    return send_file(path)
 
 
 # controller info
@@ -77,9 +85,46 @@ async def a2l_down(req: Request, session: Session):
 async def get_hardware(req: Request, session: Session):
     try:
         with open("/sys/firmware/devicetree/base/hardware", "r") as hardware_file:
-            return json.dumps({"hardware": hardware_file.read().strip()})
+            return json.dumps({"hardware": hardware_file.read().strip("\x00 \t\n\r")})
     except Exception as ex:
         return json.dumps({"err": f"No hardware description found\n{ex}"})
+
+
+@app.get("/api/get_platform")
+@with_session
+@auth
+async def get_platform(req: Request, session: Session):
+    try:
+        with open("/sys/firmware/devicetree/base/platform", "r") as platform_file:
+            return json.dumps({"platform": platform_file.read().strip("\x00 \t\n\r")})
+    except Exception as ex:
+        return json.dumps({"err": f"No platform description found\n{ex}"})
+
+
+@app.get("/api/get_rootfs_build")
+@with_session
+@auth
+async def get_rootfs_build(req: Request, session: Session):
+    """Parse /etc/image-info (shell-style KEY=VALUE) emitted by the rootfs build."""
+    try:
+        info = {}
+        with open("/etc/image-info", "r") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, val = line.split("=", 1)
+                info[key.strip()] = val.strip().strip('"').strip("'")
+        return json.dumps({
+            "build_date": info.get("IMAGE_BUILD_DATE", ""),
+            "build_sha":  info.get("IMAGE_BUILD_SHA", ""),
+            "variant":    info.get("IMAGE_VARIANT", ""),
+            "rootfs":     info.get("IMAGE_ROOTFS", ""),
+        })
+    except FileNotFoundError:
+        return json.dumps({"err": "No /etc/image-info on this controller"})
+    except Exception as ex:
+        return json.dumps({"err": f"Could not read /etc/image-info: {ex}"})
 
 
 @app.get("/api/get_software")

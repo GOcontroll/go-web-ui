@@ -99,7 +99,7 @@ async def set_wifi_type(req: Request, session: Session):
                 enable_connection("GOcontroll-AP")
             except:
                 return json.dumps({"err": "Could not raise the access point"})
-            return {"type": "ap"}
+            return json.dumps({"type": "ap"})
         elif wifi_type == "wifi":
             for con in wifi_connections:
                 try:
@@ -351,3 +351,179 @@ async def get_wifi_ip(req: Request, session: Session):
         return json.dumps({"ip": ni.ifaddresses("wlan0")[ni.AF_INET][0]["addr"]})
     except Exception as ex:
         return json.dumps({"err": f"Could not get ip:\n{ex}"})
+
+
+@app.get("/api/get_ap_info")
+@with_session
+@auth
+async def get_ap_info(req: Request, session: Session):
+    """Return the configured SSID of the GOcontroll-AP profile, no password."""
+    try:
+        result = subprocess.run(
+            ["nmcli", "-t", "-f", "802-11-wireless.ssid", "con", "show", "GOcontroll-AP"],
+            stdout=subprocess.PIPE,
+            text=True,
+        )
+        result.check_returncode()
+        ssid = ""
+        for line in result.stdout.strip().split("\n"):
+            if line.startswith("802-11-wireless.ssid:"):
+                ssid = line.split(":", 1)[1]
+                break
+        return json.dumps({"ssid": ssid})
+    except Exception as ex:
+        return json.dumps({"err": f"Could not read AP profile: {ex}"})
+
+
+def _wlan0_ip() -> str:
+    try:
+        return ni.ifaddresses("wlan0").get(ni.AF_INET, [{}])[0].get("addr", "")
+    except Exception:
+        return ""
+
+
+def _active_wlan_connection() -> str:
+    """Return the NetworkManager profile name of the currently active wifi connection
+    on wlan0 (other than GOcontroll-AP). Empty string if none."""
+    try:
+        out = subprocess.run(
+            ["nmcli", "-t", "-f", "NAME,TYPE,DEVICE", "con", "show", "--active"],
+            stdout=subprocess.PIPE, text=True,
+        )
+        out.check_returncode()
+    except Exception:
+        return ""
+    for line in out.stdout.strip().split("\n"):
+        parts = line.split(":")
+        if len(parts) < 3:
+            continue
+        name, ctype, device = parts[0], parts[1], parts[2]
+        if "wireless" in ctype and device == "wlan0" and name != "GOcontroll-AP":
+            return name
+    return ""
+
+
+@app.get("/api/get_active_wifi")
+@with_session
+@auth
+async def get_active_wifi(req: Request, session: Session):
+    """Return live details of the currently joined wifi network on wlan0,
+    excluding GOcontroll-AP. Cached scan results are used (no rescan triggered)."""
+    name = _active_wlan_connection()
+    if not name:
+        return json.dumps({"connected": False})
+
+    info = {"connected": True, "name": name, "ip": _wlan0_ip()}
+
+    # Pull live BSSID, signal, security, frequency, rate from nmcli's cached scan.
+    try:
+        result = subprocess.run(
+            ["nmcli", "-t",
+             "-f", "ACTIVE,BSSID,SSID,SIGNAL,SECURITY,FREQ,RATE",
+             "dev", "wifi", "list", "--rescan", "no"],
+            stdout=subprocess.PIPE, text=True,
+        )
+        result.check_returncode()
+        for line in result.stdout.rstrip().split("\n"):
+            parts = line.split(":")
+            # ACTIVE + 6×BSSID octets + SSID + SIGNAL + SECURITY + FREQ + RATE = 12 fields
+            if len(parts) < 12:
+                continue
+            if parts[0] != "yes":
+                continue
+            info["bssid"]     = ":".join(o.rstrip("\\") for o in parts[1:7])
+            info["ssid"]      = parts[7]
+            info["signal"]    = parts[8]
+            info["security"]  = parts[9] or "Open"
+            info["frequency"] = parts[10]
+            info["rate"]      = parts[11]
+            break
+    except Exception:
+        pass
+
+    return json.dumps(info)
+
+
+@app.get("/api/get_saved_wifi_networks")
+@with_session
+@auth
+async def get_saved_wifi_networks(req: Request, session: Session):
+    """List all saved wifi profiles (excluding GOcontroll-AP).
+    For each profile the SSID is read from its config; whether it's currently
+    on wlan0 is reflected by the 'active' flag."""
+    try:
+        out = subprocess.run(
+            ["nmcli", "-t", "-f", "NAME,TYPE,DEVICE,AUTOCONNECT", "con", "show"],
+            stdout=subprocess.PIPE, text=True,
+        )
+        out.check_returncode()
+    except Exception as ex:
+        return json.dumps({"err": f"Could not list connections: {ex}"})
+
+    networks = []
+    for line in out.stdout.strip().split("\n"):
+        parts = line.split(":")
+        if len(parts) < 4:
+            continue
+        name, ctype, device, autoconnect = parts[0], parts[1], parts[2], parts[3]
+        if "wireless" not in ctype or name == "GOcontroll-AP":
+            continue
+        ssid = name
+        try:
+            detail = subprocess.run(
+                ["nmcli", "-t", "-f", "802-11-wireless.ssid", "con", "show", name],
+                stdout=subprocess.PIPE, text=True,
+            )
+            detail.check_returncode()
+            for dline in detail.stdout.strip().split("\n"):
+                if dline.startswith("802-11-wireless.ssid:"):
+                    ssid = dline.split(":", 1)[1] or name
+                    break
+        except Exception:
+            pass
+        networks.append({
+            "name": name,
+            "ssid": ssid,
+            "active": device == "wlan0",
+            "autoconnect": autoconnect == "yes",
+        })
+    return json.dumps(networks)
+
+
+@app.post("/api/forget_wifi_network")
+@with_session
+@auth
+async def forget_wifi_network(req: Request, session: Session):
+    name = (req.json or {}).get("name", "")
+    if not name or name == "GOcontroll-AP":
+        return json.dumps({"err": "That connection cannot be removed"})
+    try:
+        result = subprocess.run(
+            ["nmcli", "con", "delete", name],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        )
+        if result.returncode != 0:
+            return json.dumps({"err": result.stderr.strip() or result.stdout.strip()})
+        return json.dumps({"name": name})
+    except Exception as ex:
+        return json.dumps({"err": f"Could not delete profile: {ex}"})
+
+
+@app.post("/api/connect_saved_wifi")
+@with_session
+@auth
+async def connect_saved_wifi(req: Request, session: Session):
+    """Activate an existing saved wifi profile by name. No password needed."""
+    name = (req.json or {}).get("name", "")
+    if not name or name == "GOcontroll-AP":
+        return json.dumps({"err": "Invalid profile"})
+    try:
+        result = subprocess.run(
+            ["nmcli", "con", "up", name],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+        )
+        if result.returncode != 0:
+            return json.dumps({"err": result.stderr.strip() or result.stdout.strip()})
+        return json.dumps({"name": name})
+    except Exception as ex:
+        return json.dumps({"err": f"Could not connect: {ex}"})

@@ -1,0 +1,2250 @@
+{
+  "201001": {
+    "name": "6 Channel Input Module",
+    "slots": [
+      "M4S1",
+      "M4S2",
+      "M4S3",
+      "M4S4",
+      "M4S5",
+      "M4S6",
+      "M4S7",
+      "M4S8",
+      "MMS1",
+      "MMS2",
+      "MMS3",
+      "MMS4",
+      "MDS1",
+      "MDS2"
+    ],
+    "pins": [
+      {
+        "function": "SUPPLY",
+        "description": "Sensor supply 5V",
+        "pins": [
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "D7",
+          "D1",
+          "E7",
+          "E1",
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "A7",
+          "A1"
+        ]
+      },
+      {
+        "function": "SUPPLY",
+        "description": "Sensor supply 5V",
+        "pins": [
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "D6",
+          "D2",
+          "E6",
+          "E2",
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "A6",
+          "A2"
+        ]
+      },
+      {
+        "function": "SUPPLY",
+        "description": "Sensor supply 5V",
+        "pins": [
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "D5",
+          "D3",
+          "E5",
+          "E3",
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "A5",
+          "A3"
+        ]
+      },
+      {
+        "function": "IN1",
+        "description": "Input signal 1",
+        "pins": [
+          "A13",
+          "A8",
+          "B13",
+          "B8",
+          "D13",
+          "D8",
+          "E13",
+          "E8",
+          "A15",
+          "A10",
+          "B15",
+          "B10",
+          "A15",
+          "A10"
+        ]
+      },
+      {
+        "function": "IN2",
+        "description": "Input signal 2",
+        "pins": [
+          "A19",
+          "A14",
+          "B19",
+          "B14",
+          "D19",
+          "D14",
+          "E19",
+          "E14",
+          "A23",
+          "A18",
+          "B23",
+          "B18",
+          "A23",
+          "A18"
+        ]
+      },
+      {
+        "function": "IN3",
+        "description": "Input signal 3",
+        "pins": [
+          "A12",
+          "A9",
+          "B12",
+          "B9",
+          "D12",
+          "D9",
+          "E12",
+          "E9",
+          "A14",
+          "A11",
+          "B14",
+          "B11",
+          "A14",
+          "A11"
+        ]
+      },
+      {
+        "function": "IN4",
+        "description": "Input signal 4",
+        "pins": [
+          "A18",
+          "A15",
+          "B18",
+          "B15",
+          "D18",
+          "D15",
+          "E18",
+          "E15",
+          "A22",
+          "A19",
+          "B22",
+          "B19",
+          "A22",
+          "A19"
+        ]
+      },
+      {
+        "function": "IN5",
+        "description": "Input signal 5",
+        "pins": [
+          "A11",
+          "A10",
+          "B11",
+          "B10",
+          "D11",
+          "D10",
+          "E11",
+          "E10",
+          "A13",
+          "A12",
+          "B13",
+          "B12",
+          "A13",
+          "A12"
+        ]
+      },
+      {
+        "function": "IN6",
+        "description": "Input signal 6",
+        "pins": [
+          "A17",
+          "A16",
+          "B17",
+          "B16",
+          "D17",
+          "D16",
+          "E17",
+          "E16",
+          "A21",
+          "A20",
+          "B21",
+          "B20",
+          "A21",
+          "A20"
+        ]
+      },
+      {
+        "function": "GROUND",
+        "description": "Sensor ground",
+        "pins": [
+          "A26",
+          "A20",
+          "B26",
+          "B20",
+          "D26",
+          "D20",
+          "E26",
+          "E20",
+          "A32",
+          "A26",
+          "B32",
+          "B26",
+          "A32",
+          "A26"
+        ]
+      },
+      {
+        "function": "GROUND",
+        "description": "Sensor ground",
+        "pins": [
+          "A25",
+          "A21",
+          "B25",
+          "B21",
+          "D25",
+          "D21",
+          "E25",
+          "E21",
+          "A31",
+          "A27",
+          "B31",
+          "B27",
+          "A31",
+          "A27"
+        ]
+      },
+      {
+        "function": "GROUND",
+        "description": "Sensor ground",
+        "pins": [
+          "A24",
+          "A22",
+          "B24",
+          "B22",
+          "D24",
+          "D22",
+          "E24",
+          "E22",
+          "A30",
+          "A28",
+          "B30",
+          "B28",
+          "A30",
+          "A28"
+        ]
+      },
+      {
+        "function": "NC",
+        "description": "No functionality",
+        "pins": [
+          "A4",
+          "A23",
+          "B4",
+          "B23",
+          "D4",
+          "D23",
+          "E4",
+          "E23",
+          "A4",
+          "A29",
+          "B4",
+          "B29",
+          "A4",
+          "A29"
+        ]
+      }
+    ]
+  },
+  "202002": {
+    "name": "6 Channel Output Module",
+    "slots": [
+      "M4S1",
+      "M4S2",
+      "M4S3",
+      "M4S4",
+      "M4S5",
+      "M4S6",
+      "M4S7",
+      "M4S8",
+      "MMS1",
+      "MMS2",
+      "MMS3",
+      "MMS4",
+      "MDS1",
+      "MDS2"
+    ],
+    "pins": [
+      {
+        "function": "POWER SUPPLY",
+        "description": "Power to the module",
+        "pins": [
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "D7",
+          "D1",
+          "E7",
+          "E1",
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "A7",
+          "A1"
+        ]
+      },
+      {
+        "function": "POWER SUPPLY",
+        "description": "Power to the module",
+        "pins": [
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "D6",
+          "D2",
+          "E6",
+          "E2",
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "A6",
+          "A2"
+        ]
+      },
+      {
+        "function": "POWER SUPPLY",
+        "description": "Power to the module",
+        "pins": [
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "D5",
+          "D3",
+          "E5",
+          "E3",
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "A5",
+          "A3"
+        ]
+      },
+      {
+        "function": "OUT 1",
+        "description": "Actuator output channel 1",
+        "pins": [
+          "A13",
+          "A8",
+          "B13",
+          "B8",
+          "D13",
+          "D8",
+          "E13",
+          "E8",
+          "A15",
+          "A10",
+          "B15",
+          "B10",
+          "A15",
+          "A10"
+        ]
+      },
+      {
+        "function": "OUT 2",
+        "description": "Actuator output channel 2",
+        "pins": [
+          "A19",
+          "A14",
+          "B19",
+          "B14",
+          "D19",
+          "D14",
+          "E19",
+          "E14",
+          "A23",
+          "A18",
+          "B23",
+          "B18",
+          "A23",
+          "A18"
+        ]
+      },
+      {
+        "function": "OUT 3",
+        "description": "Actuator output channel 3",
+        "pins": [
+          "A12",
+          "A9",
+          "B12",
+          "B9",
+          "D12",
+          "D9",
+          "E12",
+          "E9",
+          "A14",
+          "A11",
+          "B14",
+          "B11",
+          "A14",
+          "A11"
+        ]
+      },
+      {
+        "function": "OUT 4",
+        "description": "Actuator output channel 4",
+        "pins": [
+          "A18",
+          "A15",
+          "B18",
+          "B15",
+          "D18",
+          "D15",
+          "E18",
+          "E15",
+          "A22",
+          "A19",
+          "B22",
+          "B19",
+          "A22",
+          "A19"
+        ]
+      },
+      {
+        "function": "OUT 5",
+        "description": "Actuator output channel 5",
+        "pins": [
+          "A11",
+          "A10",
+          "B11",
+          "B10",
+          "D11",
+          "D10",
+          "E11",
+          "E10",
+          "A13",
+          "A12",
+          "B13",
+          "B12",
+          "A13",
+          "A12"
+        ]
+      },
+      {
+        "function": "OUT 6",
+        "description": "Actuator output channel 6",
+        "pins": [
+          "A17",
+          "A16",
+          "B17",
+          "B16",
+          "D17",
+          "D16",
+          "E17",
+          "E16",
+          "A21",
+          "A20",
+          "B21",
+          "B20",
+          "A21",
+          "A20"
+        ]
+      },
+      {
+        "function": "POWER GROUND",
+        "description": "Ground to module",
+        "pins": [
+          "A26",
+          "A20",
+          "B26",
+          "B20",
+          "D26",
+          "D20",
+          "E26",
+          "E20",
+          "A32",
+          "A26",
+          "B32",
+          "B26",
+          "A32",
+          "A26"
+        ]
+      },
+      {
+        "function": "POWER GROUND",
+        "description": "Ground to module",
+        "pins": [
+          "A25",
+          "A21",
+          "B25",
+          "B21",
+          "D25",
+          "D21",
+          "E25",
+          "E21",
+          "A31",
+          "A27",
+          "B31",
+          "B27",
+          "A31",
+          "A27"
+        ]
+      },
+      {
+        "function": "POWER GROUND",
+        "description": "Ground to module",
+        "pins": [
+          "A24",
+          "A22",
+          "B24",
+          "B22",
+          "D24",
+          "D22",
+          "E24",
+          "E22",
+          "A30",
+          "A28",
+          "B30",
+          "B28",
+          "A30",
+          "A28"
+        ]
+      },
+      {
+        "function": "NC",
+        "description": "No functionality",
+        "pins": [
+          "A4",
+          "A23",
+          "B4",
+          "B23",
+          "D4",
+          "D23",
+          "E4",
+          "E23",
+          "A4",
+          "A29",
+          "B4",
+          "B29",
+          "A4",
+          "A29"
+        ]
+      }
+    ]
+  },
+  "201002": {
+    "name": "10 Channel Input Module",
+    "slots": [
+      "M4S1",
+      "M4S2",
+      "M4S3",
+      "M4S4",
+      "M4S5",
+      "M4S6",
+      "M4S7",
+      "M4S8",
+      "MMS1",
+      "MMS2",
+      "MMS3",
+      "MMS4",
+      "MDS1",
+      "MDS2"
+    ],
+    "pins": [
+      {
+        "function": "SUPPLY",
+        "description": "Sensor supply 5V",
+        "pins": [
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "D7",
+          "D1",
+          "E7",
+          "E1",
+          "A6",
+          "A1",
+          "B6",
+          "B1",
+          "A6",
+          "A1"
+        ]
+      },
+      {
+        "function": "SUPPLY",
+        "description": "Sensor supply 5V",
+        "pins": [
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "D6",
+          "D2",
+          "E6",
+          "E2",
+          "A7",
+          "A2",
+          "B7",
+          "B2",
+          "A7",
+          "A2"
+        ]
+      },
+      {
+        "function": "IN1",
+        "description": "Input signal 1",
+        "pins": [
+          "A13",
+          "A8",
+          "B13",
+          "B8",
+          "D13",
+          "D8",
+          "E13",
+          "E8",
+          "A15",
+          "A10",
+          "B15",
+          "B10",
+          "A15",
+          "A10"
+        ]
+      },
+      {
+        "function": "IN2",
+        "description": "Input signal 2",
+        "pins": [
+          "A19",
+          "A14",
+          "B19",
+          "B14",
+          "D19",
+          "D14",
+          "E19",
+          "E14",
+          "A23",
+          "A18",
+          "B23",
+          "B18",
+          "A23",
+          "A18"
+        ]
+      },
+      {
+        "function": "IN3",
+        "description": "Input signal 3",
+        "pins": [
+          "A12",
+          "A9",
+          "B12",
+          "B9",
+          "D12",
+          "D9",
+          "E12",
+          "E9",
+          "A14",
+          "A11",
+          "B14",
+          "B11",
+          "A14",
+          "A11"
+        ]
+      },
+      {
+        "function": "IN4",
+        "description": "Input signal 4",
+        "pins": [
+          "A18",
+          "A15",
+          "B18",
+          "B15",
+          "D18",
+          "D15",
+          "E18",
+          "E15",
+          "A22",
+          "A19",
+          "B22",
+          "B19",
+          "A22",
+          "A19"
+        ]
+      },
+      {
+        "function": "IN5",
+        "description": "Input signal 5",
+        "pins": [
+          "A11",
+          "A10",
+          "B11",
+          "B10",
+          "D11",
+          "D10",
+          "E11",
+          "E10",
+          "A13",
+          "A12",
+          "B13",
+          "B12",
+          "A13",
+          "A12"
+        ]
+      },
+      {
+        "function": "IN6",
+        "description": "Input signal 6",
+        "pins": [
+          "A17",
+          "A16",
+          "B17",
+          "B16",
+          "D17",
+          "D16",
+          "E17",
+          "E16",
+          "A21",
+          "A20",
+          "B21",
+          "B20",
+          "A21",
+          "A20"
+        ]
+      },
+      {
+        "function": "IN7",
+        "description": "Input signal 7",
+        "pins": [
+          "A25",
+          "A21",
+          "B25",
+          "B21",
+          "D25",
+          "D21",
+          "E25",
+          "E21",
+          "A31",
+          "A27",
+          "B31",
+          "B27",
+          "A31",
+          "A27"
+        ]
+      },
+      {
+        "function": "IN8",
+        "description": "Input signal 8",
+        "pins": [
+          "A24",
+          "A22",
+          "B24",
+          "B22",
+          "D24",
+          "D22",
+          "E24",
+          "E22",
+          "A30",
+          "A28",
+          "B30",
+          "B28",
+          "A30",
+          "A28"
+        ]
+      },
+      {
+        "function": "IN9",
+        "description": "Input signal 9",
+        "pins": [
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "D5",
+          "D3",
+          "E5",
+          "E3",
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "A5",
+          "A3"
+        ]
+      },
+      {
+        "function": "IN10",
+        "description": "Input signal 10",
+        "pins": [
+          "A4",
+          "A23",
+          "B4",
+          "B23",
+          "D4",
+          "D23",
+          "E4",
+          "E23",
+          "A4",
+          "A29",
+          "B4",
+          "B29",
+          "A4",
+          "A29"
+        ]
+      },
+      {
+        "function": "GROUND",
+        "description": "Sensor ground",
+        "pins": [
+          "A26",
+          "A20",
+          "B26",
+          "B20",
+          "D26",
+          "D20",
+          "E26",
+          "E20",
+          "A32",
+          "A26",
+          "B32",
+          "B26",
+          "A32",
+          "A26"
+        ]
+      }
+    ]
+  },
+  "202003": {
+    "name": "10 Channel Output Module",
+    "slots": [
+      "M4S1",
+      "M4S2",
+      "M4S3",
+      "M4S4",
+      "M4S5",
+      "M4S6",
+      "M4S7",
+      "M4S8",
+      "MMS1",
+      "MMS2",
+      "MMS3",
+      "MMS4",
+      "MDS1",
+      "MDS2"
+    ],
+    "pins": [
+      {
+        "function": "POWER SUPPLY",
+        "description": "Power to the module",
+        "pins": [
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "D7",
+          "D1",
+          "E7",
+          "E1",
+          "A6",
+          "A1",
+          "B6",
+          "B1",
+          "A6",
+          "A1"
+        ]
+      },
+      {
+        "function": "POWER SUPPLY",
+        "description": "Power to the module",
+        "pins": [
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "D6",
+          "D2",
+          "E6",
+          "E2",
+          "A7",
+          "A2",
+          "B7",
+          "B2",
+          "A7",
+          "A2"
+        ]
+      },
+      {
+        "function": "OUT 1",
+        "description": "Actuator output channel 1",
+        "pins": [
+          "A13",
+          "A8",
+          "B13",
+          "B8",
+          "D13",
+          "D8",
+          "E13",
+          "E8",
+          "A15",
+          "A10",
+          "B15",
+          "B10",
+          "A15",
+          "A10"
+        ]
+      },
+      {
+        "function": "OUT 2",
+        "description": "Actuator output channel 2",
+        "pins": [
+          "A19",
+          "A14",
+          "B19",
+          "B14",
+          "D19",
+          "D14",
+          "E19",
+          "E14",
+          "A23",
+          "A18",
+          "B23",
+          "B18",
+          "A23",
+          "A18"
+        ]
+      },
+      {
+        "function": "OUT 3",
+        "description": "Actuator output channel 3",
+        "pins": [
+          "A12",
+          "A9",
+          "B12",
+          "B9",
+          "D12",
+          "D9",
+          "E12",
+          "E9",
+          "A14",
+          "A11",
+          "B14",
+          "B11",
+          "A14",
+          "A11"
+        ]
+      },
+      {
+        "function": "OUT 4",
+        "description": "Actuator output channel 4",
+        "pins": [
+          "A18",
+          "A15",
+          "B18",
+          "B15",
+          "D18",
+          "D15",
+          "E18",
+          "E15",
+          "A22",
+          "A19",
+          "B22",
+          "B19",
+          "A22",
+          "A19"
+        ]
+      },
+      {
+        "function": "OUT 5",
+        "description": "Actuator output channel 5",
+        "pins": [
+          "A11",
+          "A10",
+          "B11",
+          "B10",
+          "D11",
+          "D10",
+          "E11",
+          "E10",
+          "A13",
+          "A12",
+          "B13",
+          "B12",
+          "A13",
+          "A12"
+        ]
+      },
+      {
+        "function": "OUT 6",
+        "description": "Actuator output channel 6",
+        "pins": [
+          "A17",
+          "A16",
+          "B17",
+          "B16",
+          "D17",
+          "D16",
+          "E17",
+          "E16",
+          "A21",
+          "A20",
+          "B21",
+          "B20",
+          "A21",
+          "A20"
+        ]
+      },
+      {
+        "function": "OUT 7",
+        "description": "Actuator output channel 7",
+        "pins": [
+          "A25",
+          "A21",
+          "B25",
+          "B21",
+          "D25",
+          "D21",
+          "E25",
+          "E21",
+          "A31",
+          "A27",
+          "B31",
+          "B27",
+          "A31",
+          "A27"
+        ]
+      },
+      {
+        "function": "OUT 8",
+        "description": "Actuator output channel 8",
+        "pins": [
+          "A24",
+          "A22",
+          "B24",
+          "B22",
+          "D24",
+          "D22",
+          "E24",
+          "E22",
+          "A30",
+          "A28",
+          "B30",
+          "B28",
+          "A30",
+          "A28"
+        ]
+      },
+      {
+        "function": "OUT 9",
+        "description": "Actuator output channel 9",
+        "pins": [
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "D5",
+          "D3",
+          "E5",
+          "E3",
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "A5",
+          "A3"
+        ]
+      },
+      {
+        "function": "OUT 10",
+        "description": "Actuator output channel 10",
+        "pins": [
+          "A4",
+          "A23",
+          "B4",
+          "B23",
+          "D4",
+          "D23",
+          "E4",
+          "E23",
+          "A4",
+          "A29",
+          "B4",
+          "B29",
+          "A4",
+          "A29"
+        ]
+      },
+      {
+        "function": "POWER GROUND",
+        "description": "Ground to module",
+        "pins": [
+          "A26",
+          "A20",
+          "B26",
+          "B20",
+          "D26",
+          "D20",
+          "E26",
+          "E20",
+          "A32",
+          "A26",
+          "B32",
+          "B26",
+          "A32",
+          "A26"
+        ]
+      }
+    ]
+  },
+  "201003": {
+    "name": "4-20 mA Input Module",
+    "slots": [
+      "M4S1",
+      "M4S2",
+      "M4S3",
+      "M4S4",
+      "M4S5",
+      "M4S6",
+      "M4S7",
+      "M4S8",
+      "MMS1",
+      "MMS2",
+      "MMS3",
+      "MMS4",
+      "MDS1",
+      "MDS2"
+    ],
+    "pins": [
+      {
+        "function": "IN 1",
+        "description": "0 - 20 mA input 1 (sourcing ~16V)",
+        "pins": [
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "D7",
+          "D1",
+          "E7",
+          "E1",
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "A7",
+          "A1"
+        ]
+      },
+      {
+        "function": "IN 2",
+        "description": "0 - 20 mA input 2 (sourcing ~16V)",
+        "pins": [
+          "A13",
+          "A8",
+          "B13",
+          "B8",
+          "D13",
+          "D8",
+          "E13",
+          "E8",
+          "A15",
+          "A10",
+          "B15",
+          "B10",
+          "A15",
+          "A10"
+        ]
+      },
+      {
+        "function": "IN 3",
+        "description": "0 - 20 mA input 3 (sourcing ~16V)",
+        "pins": [
+          "A19",
+          "A14",
+          "B19",
+          "B14",
+          "D19",
+          "D14",
+          "E19",
+          "E14",
+          "A23",
+          "A18",
+          "B23",
+          "B18",
+          "A23",
+          "A18"
+        ]
+      },
+      {
+        "function": "IN 4",
+        "description": "0 - 20 mA input 4 (sourcing ~16V)",
+        "pins": [
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "D6",
+          "D2",
+          "E6",
+          "E2",
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "A6",
+          "A2"
+        ]
+      },
+      {
+        "function": "IN 5",
+        "description": "0 - 20 mA input 5 (sourcing ~16V)",
+        "pins": [
+          "A12",
+          "A9",
+          "B12",
+          "B9",
+          "D12",
+          "D9",
+          "E12",
+          "E9",
+          "A14",
+          "A11",
+          "B14",
+          "B11",
+          "A14",
+          "A11"
+        ]
+      },
+      {
+        "function": "IN 6",
+        "description": "0 - 20 mA input 6 (sourcing ~16V)",
+        "pins": [
+          "A18",
+          "A15",
+          "B18",
+          "B15",
+          "D18",
+          "D15",
+          "E18",
+          "E15",
+          "A22",
+          "A19",
+          "B22",
+          "B19",
+          "A22",
+          "A19"
+        ]
+      },
+      {
+        "function": "IN 7",
+        "description": "0 - 20 mA input 7 (sourcing ~16V)",
+        "pins": [
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "D5",
+          "D3",
+          "E5",
+          "E3",
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "A5",
+          "A3"
+        ]
+      },
+      {
+        "function": "IN 8",
+        "description": "0 - 20 mA input 8 (sourcing ~16V)",
+        "pins": [
+          "A11",
+          "A10",
+          "B11",
+          "B10",
+          "D11",
+          "D10",
+          "E11",
+          "E10",
+          "A13",
+          "A12",
+          "B13",
+          "B12",
+          "A13",
+          "A12"
+        ]
+      },
+      {
+        "function": "IN 9",
+        "description": "0 - 20 mA input 9 (sourcing ~16V)",
+        "pins": [
+          "A17",
+          "A16",
+          "B17",
+          "B16",
+          "D17",
+          "D16",
+          "E17",
+          "E16",
+          "A21",
+          "A20",
+          "B21",
+          "B20",
+          "A21",
+          "A20"
+        ]
+      },
+      {
+        "function": "IN 10",
+        "description": "0 - 20 mA input 10 (sourcing ~16V)",
+        "pins": [
+          "A4",
+          "A23",
+          "B4",
+          "B23",
+          "D4",
+          "D23",
+          "E4",
+          "E23",
+          "A4",
+          "A29",
+          "B4",
+          "B29",
+          "A4",
+          "A29"
+        ]
+      },
+      {
+        "function": "GROUND",
+        "description": "Current loop ground",
+        "pins": [
+          "A26",
+          "A20",
+          "B26",
+          "B20",
+          "D26",
+          "D20",
+          "E26",
+          "E20",
+          "A32",
+          "A26",
+          "B32",
+          "B26",
+          "A32",
+          "A26"
+        ]
+      },
+      {
+        "function": "GROUND",
+        "description": "Current loop ground",
+        "pins": [
+          "A25",
+          "A21",
+          "B25",
+          "B21",
+          "D25",
+          "D21",
+          "E25",
+          "E21",
+          "A31",
+          "A27",
+          "B31",
+          "B27",
+          "A31",
+          "A27"
+        ]
+      },
+      {
+        "function": "GROUND",
+        "description": "Current loop ground",
+        "pins": [
+          "A24",
+          "A22",
+          "B24",
+          "B22",
+          "D24",
+          "D22",
+          "E24",
+          "E22",
+          "A30",
+          "A28",
+          "B30",
+          "B28",
+          "A30",
+          "A28"
+        ]
+      }
+    ]
+  },
+  "202001": {
+    "name": "2 Channel Power Bridge Module",
+    "slots": [
+      "M4S1",
+      "M4S2",
+      "M4S3",
+      "M4S4",
+      "M4S5",
+      "M4S6",
+      "M4S7",
+      "M4S8",
+      "MMS1",
+      "MMS2",
+      "MMS3",
+      "MMS4",
+      "MDS1",
+      "MDS2"
+    ],
+    "pins": [
+      {
+        "function": "POWER SUPPLY",
+        "description": "Power to the module",
+        "pins": [
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "D7",
+          "D1",
+          "E7",
+          "E1",
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "A7",
+          "A1"
+        ]
+      },
+      {
+        "function": "POWER SUPPLY",
+        "description": "Power to the module",
+        "pins": [
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "D6",
+          "D2",
+          "E6",
+          "E2",
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "A6",
+          "A2"
+        ]
+      },
+      {
+        "function": "POWER SUPPLY",
+        "description": "Power to the module",
+        "pins": [
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "D5",
+          "D3",
+          "E5",
+          "E3",
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "A5",
+          "A3"
+        ]
+      },
+      {
+        "function": "OUT 1",
+        "description": "Actuator output channel 1",
+        "pins": [
+          "A13",
+          "A8",
+          "B13",
+          "B8",
+          "D13",
+          "D8",
+          "E13",
+          "E8",
+          "A15",
+          "A10",
+          "B15",
+          "B10",
+          "A15",
+          "A10"
+        ]
+      },
+      {
+        "function": "OUT 1",
+        "description": "Actuator output channel 1",
+        "pins": [
+          "A12",
+          "A9",
+          "B12",
+          "B9",
+          "D12",
+          "D9",
+          "E12",
+          "E9",
+          "A14",
+          "A11",
+          "B14",
+          "B11",
+          "A14",
+          "A11"
+        ]
+      },
+      {
+        "function": "OUT 1",
+        "description": "Actuator output channel 1",
+        "pins": [
+          "A11",
+          "A10",
+          "B11",
+          "B10",
+          "D11",
+          "D10",
+          "E11",
+          "E10",
+          "A13",
+          "A12",
+          "B13",
+          "B12",
+          "A13",
+          "A12"
+        ]
+      },
+      {
+        "function": "OUT 2",
+        "description": "Actuator output channel 2",
+        "pins": [
+          "A19",
+          "A14",
+          "B19",
+          "B14",
+          "D19",
+          "D14",
+          "E19",
+          "E14",
+          "A23",
+          "A18",
+          "B23",
+          "B18",
+          "A23",
+          "A18"
+        ]
+      },
+      {
+        "function": "OUT 2",
+        "description": "Actuator output channel 2",
+        "pins": [
+          "A18",
+          "A15",
+          "B18",
+          "B15",
+          "D18",
+          "D15",
+          "E18",
+          "E15",
+          "A22",
+          "A19",
+          "B22",
+          "B19",
+          "A22",
+          "A19"
+        ]
+      },
+      {
+        "function": "OUT 2",
+        "description": "Actuator output channel 2",
+        "pins": [
+          "A17",
+          "A16",
+          "B17",
+          "B16",
+          "D17",
+          "D16",
+          "E17",
+          "E16",
+          "A21",
+          "A20",
+          "B21",
+          "B20",
+          "A21",
+          "A20"
+        ]
+      },
+      {
+        "function": "POWER GROUND",
+        "description": "Ground to module",
+        "pins": [
+          "A26",
+          "A20",
+          "B26",
+          "B20",
+          "D26",
+          "D20",
+          "E26",
+          "E20",
+          "A32",
+          "A26",
+          "B32",
+          "B26",
+          "A32",
+          "A26"
+        ]
+      },
+      {
+        "function": "POWER GROUND",
+        "description": "Ground to module",
+        "pins": [
+          "A25",
+          "A21",
+          "B25",
+          "B21",
+          "D25",
+          "D21",
+          "E25",
+          "E21",
+          "A31",
+          "A27",
+          "B31",
+          "B27",
+          "A31",
+          "A27"
+        ]
+      },
+      {
+        "function": "POWER GROUND",
+        "description": "Ground to module",
+        "pins": [
+          "A24",
+          "A22",
+          "B24",
+          "B22",
+          "D24",
+          "D22",
+          "E24",
+          "E22",
+          "A30",
+          "A28",
+          "B30",
+          "B28",
+          "A30",
+          "A28"
+        ]
+      },
+      {
+        "function": "NC",
+        "description": "No functionality",
+        "pins": [
+          "A4",
+          "A23",
+          "B4",
+          "B23",
+          "D4",
+          "D23",
+          "E4",
+          "E23",
+          "A4",
+          "A29",
+          "B4",
+          "B29",
+          "A4",
+          "A29"
+        ]
+      }
+    ]
+  },
+  "203003": {
+    "name": "Anleg IR Module",
+    "slots": [
+      "M4S1",
+      "M4S2",
+      "M4S3",
+      "M4S4",
+      "M4S5",
+      "M4S6",
+      "M4S7",
+      "M4S8",
+      "MMS1",
+      "MMS2",
+      "MMS3",
+      "MMS4",
+      "MDS1",
+      "MDS2"
+    ],
+    "pins": [
+      {
+        "function": "SUPPLY",
+        "description": "Supply to Module",
+        "pins": [
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "D7",
+          "D1",
+          "E7",
+          "E1",
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "A7",
+          "A1"
+        ]
+      },
+      {
+        "function": "RS485/RS232TX",
+        "description": "RS485/RS232 TX output",
+        "pins": [
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "D6",
+          "D2",
+          "E6",
+          "E2",
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "A6",
+          "A2"
+        ]
+      },
+      {
+        "function": "RS485/RS232RX",
+        "description": "RS485/RS232 RX input",
+        "pins": [
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "D5",
+          "D3",
+          "E5",
+          "E3",
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "A5",
+          "A3"
+        ]
+      },
+      {
+        "function": "NC",
+        "description": "No functionality",
+        "pins": [
+          "A13",
+          "A8",
+          "B13",
+          "B8",
+          "D13",
+          "D8",
+          "E13",
+          "E8",
+          "A15",
+          "A10",
+          "B15",
+          "B10",
+          "A15",
+          "A10"
+        ]
+      },
+      {
+        "function": "LED A",
+        "description": "LED out A",
+        "pins": [
+          "A12",
+          "A9",
+          "B12",
+          "B9",
+          "D12",
+          "D9",
+          "E12",
+          "E9",
+          "A14",
+          "A11",
+          "B14",
+          "B11",
+          "A14",
+          "A11"
+        ]
+      },
+      {
+        "function": "IR IN",
+        "description": "IR emitter ring feedback",
+        "pins": [
+          "A11",
+          "A10",
+          "B11",
+          "B10",
+          "D11",
+          "D10",
+          "E11",
+          "E10",
+          "A13",
+          "A12",
+          "B13",
+          "B12",
+          "A13",
+          "A12"
+        ]
+      },
+      {
+        "function": "NC",
+        "description": "No functionality",
+        "pins": [
+          "A19",
+          "A14",
+          "B19",
+          "B14",
+          "D19",
+          "D14",
+          "E19",
+          "E14",
+          "A23",
+          "A18",
+          "B23",
+          "B18",
+          "A23",
+          "A18"
+        ]
+      },
+      {
+        "function": "LED B",
+        "description": "LED out B",
+        "pins": [
+          "A18",
+          "A15",
+          "B18",
+          "B15",
+          "D18",
+          "D15",
+          "E18",
+          "E15",
+          "A22",
+          "A19",
+          "B22",
+          "B19",
+          "A22",
+          "A19"
+        ]
+      },
+      {
+        "function": "IR OUT",
+        "description": "IR emitter ring control out",
+        "pins": [
+          "A17",
+          "A16",
+          "B17",
+          "B16",
+          "D17",
+          "D16",
+          "E17",
+          "E16",
+          "A21",
+          "A20",
+          "B21",
+          "B20",
+          "A21",
+          "A20"
+        ]
+      },
+      {
+        "function": "GROUND",
+        "description": "Ground to module",
+        "pins": [
+          "A26",
+          "A20",
+          "B26",
+          "B20",
+          "D26",
+          "D20",
+          "E26",
+          "E20",
+          "A32",
+          "A26",
+          "B32",
+          "B26",
+          "A32",
+          "A26"
+        ]
+      },
+      {
+        "function": "CAN L",
+        "description": "CAN 1 Low",
+        "pins": [
+          "A25",
+          "A21",
+          "B25",
+          "B21",
+          "D25",
+          "D21",
+          "E25",
+          "E21",
+          "A31",
+          "A27",
+          "B31",
+          "B27",
+          "A31",
+          "A27"
+        ]
+      },
+      {
+        "function": "CAN H",
+        "description": "CAN 1 High",
+        "pins": [
+          "A24",
+          "A22",
+          "B24",
+          "B22",
+          "D24",
+          "D22",
+          "E24",
+          "E22",
+          "A30",
+          "A28",
+          "B30",
+          "B28",
+          "A30",
+          "A28"
+        ]
+      },
+      {
+        "function": "SUPPLY",
+        "description": "IR ring 5V or 12V supply",
+        "pins": [
+          "A4",
+          "A23",
+          "B4",
+          "B23",
+          "D4",
+          "D23",
+          "E4",
+          "E23",
+          "A4",
+          "A29",
+          "B4",
+          "B29",
+          "A4",
+          "A29"
+        ]
+      }
+    ]
+  },
+  "203004": {
+    "name": "Multibus",
+    "slots": [
+      "M4S1",
+      "M4S2",
+      "M4S3",
+      "M4S4",
+      "M4S5",
+      "M4S6",
+      "M4S7",
+      "M4S8",
+      "MMS1",
+      "MMS2",
+      "MMS3",
+      "MMS4",
+      "MDS1",
+      "MDS2"
+    ],
+    "pins": [
+      {
+        "function": "SUPPLY",
+        "description": "Variable sensor supply 5 - 16V",
+        "pins": [
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "D7",
+          "D1",
+          "E7",
+          "E1",
+          "A7",
+          "A1",
+          "B7",
+          "B1",
+          "A7",
+          "A1"
+        ]
+      },
+      {
+        "function": "CAN H",
+        "description": "CAN 1 High",
+        "pins": [
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "D6",
+          "D2",
+          "E6",
+          "E2",
+          "A6",
+          "A2",
+          "B6",
+          "B2",
+          "A6",
+          "A2"
+        ]
+      },
+      {
+        "function": "CAN L",
+        "description": "CAN 1 Low",
+        "pins": [
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "D5",
+          "D3",
+          "E5",
+          "E3",
+          "A5",
+          "A3",
+          "B5",
+          "B3",
+          "A5",
+          "A3"
+        ]
+      },
+      {
+        "function": "RS485B/RS232OUT",
+        "description": "RS485 1 B or RS232 1 OUT (sw select)",
+        "pins": [
+          "A13",
+          "A8",
+          "B13",
+          "B8",
+          "D13",
+          "D8",
+          "E13",
+          "E8",
+          "A15",
+          "A10",
+          "B15",
+          "B10",
+          "A15",
+          "A10"
+        ]
+      },
+      {
+        "function": "RS485A/RS232IN",
+        "description": "RS485 1 A or RS232 1 IN (sw select)",
+        "pins": [
+          "A12",
+          "A9",
+          "B12",
+          "B9",
+          "D12",
+          "D9",
+          "E12",
+          "E9",
+          "A14",
+          "A11",
+          "B14",
+          "B11",
+          "A14",
+          "A11"
+        ]
+      },
+      {
+        "function": "ISOSPI IP",
+        "description": "IP pin form the ISOSPI interface",
+        "pins": [
+          "A11",
+          "A10",
+          "B11",
+          "B10",
+          "D11",
+          "D10",
+          "E11",
+          "E10",
+          "A13",
+          "A12",
+          "B13",
+          "B12",
+          "A13",
+          "A12"
+        ]
+      },
+      {
+        "function": "RS485B/CAN H",
+        "description": "RS485 2 B or CAN 2 High (sw select)",
+        "pins": [
+          "A19",
+          "A14",
+          "B19",
+          "B14",
+          "D19",
+          "D14",
+          "E19",
+          "E14",
+          "A23",
+          "A18",
+          "B23",
+          "B18",
+          "A23",
+          "A18"
+        ]
+      },
+      {
+        "function": "RS485A/CAN L",
+        "description": "RS485 2 A or CAN 2 Low (sw select)",
+        "pins": [
+          "A18",
+          "A15",
+          "B18",
+          "B15",
+          "D18",
+          "D15",
+          "E18",
+          "E15",
+          "A22",
+          "A19",
+          "B22",
+          "B19",
+          "A22",
+          "A19"
+        ]
+      },
+      {
+        "function": "ISOSPI IM",
+        "description": "IM pin form the ISOSPI interface",
+        "pins": [
+          "A17",
+          "A16",
+          "B17",
+          "B16",
+          "D17",
+          "D16",
+          "E17",
+          "E16",
+          "A21",
+          "A20",
+          "B21",
+          "B20",
+          "A21",
+          "A20"
+        ]
+      },
+      {
+        "function": "GROUND",
+        "description": "Ground to sensor/device",
+        "pins": [
+          "A26",
+          "A20",
+          "B26",
+          "B20",
+          "D26",
+          "D20",
+          "E26",
+          "E20",
+          "A32",
+          "A26",
+          "B32",
+          "B26",
+          "A32",
+          "A26"
+        ]
+      },
+      {
+        "function": "RS485B/CAN H",
+        "description": "RS485 3 B or CAN 3 High (sw select)",
+        "pins": [
+          "A25",
+          "A21",
+          "B25",
+          "B21",
+          "D25",
+          "D21",
+          "E25",
+          "E21",
+          "A31",
+          "A27",
+          "B31",
+          "B27",
+          "A31",
+          "A27"
+        ]
+      },
+      {
+        "function": "RS485A/CAN L",
+        "description": "RS485 3 A or CAN 3 Low (sw select)",
+        "pins": [
+          "A24",
+          "A22",
+          "B24",
+          "B22",
+          "D24",
+          "D22",
+          "E24",
+          "E22",
+          "A30",
+          "A28",
+          "B30",
+          "B28",
+          "A30",
+          "A28"
+        ]
+      },
+      {
+        "function": "GROUND",
+        "description": "Ground to sensor/device",
+        "pins": [
+          "A4",
+          "A23",
+          "B4",
+          "B23",
+          "D4",
+          "D23",
+          "E4",
+          "E23",
+          "A4",
+          "A29",
+          "B4",
+          "B29",
+          "A4",
+          "A29"
+        ]
+      }
+    ]
+  }
+}

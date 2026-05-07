@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const hardware_request = fetch("/api/get_hardware");
   const rootfs_request = fetch("/api/get_rootfs_build");
   const simulink_request = fetch('/api/get_sim_ver');
+  render_controller_pinning();
 
   var res = await (await sn_request).json();
   if (res.err) {
@@ -62,6 +63,65 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById("simulink_version").innerText = res.version;
   }
 }, false);
+
+
+async function render_controller_pinning() {
+  const card = document.getElementById("controller-pinning-card");
+  if (!card) return;
+  let resp;
+  try {
+    resp = await (await fetch("/api/get_controller_pinning")).json();
+  } catch (err) {
+    console.log("controller pinning fetch failed:", err);
+    return;
+  }
+  if (resp.err) {
+    console.log("controller pinning:", resp.err);
+    return;
+  }
+
+  const title = document.getElementById("controller-pinning-title");
+  title.textContent = "Controller pinning · " + (resp.connector_label || resp.platform);
+
+  const desc = document.getElementById("controller-pinning-desc");
+  if (resp.description) {
+    desc.textContent = resp.description;
+    desc.hidden = false;
+  } else {
+    desc.hidden = true;
+  }
+
+  const wrap = document.getElementById("controller-image-wrap");
+  const img = document.getElementById("controller-connector-image");
+  if (resp.connector_image) {
+    img.src = resp.connector_image;
+    img.alt = resp.connector_label || "Controller connector";
+    wrap.hidden = false;
+  } else {
+    wrap.hidden = true;
+    document.getElementById("controller-pinning-body").style.gridTemplateColumns = "1fr";
+  }
+
+  const tbody = document.getElementById("controller-pinning-tbody");
+  tbody.textContent = "";
+  for (const p of (resp.pins || [])) {
+    const tr = document.createElement("tr");
+    const pinTd = document.createElement("td");
+    pinTd.className = "pin-cell";
+    pinTd.textContent = p.pin;
+    tr.appendChild(pinTd);
+    const sigTd = document.createElement("td");
+    sigTd.className = "func-cell";
+    sigTd.textContent = p.signal;
+    tr.appendChild(sigTd);
+    const descTd = document.createElement("td");
+    descTd.className = "desc-cell";
+    descTd.textContent = p.description;
+    tr.appendChild(descTd);
+    tbody.appendChild(tr);
+  }
+  card.hidden = false;
+}
 
 
 function alert_class_switch(elem, newClass) {

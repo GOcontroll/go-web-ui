@@ -1,0 +1,268 @@
+{
+  "M4S": {
+    "platforms": [
+      "L1",
+      "L2",
+      "L3",
+      "L4",
+      "L5"
+    ],
+    "connector_label": "Connector C — System connector (26-pin)",
+    "description": "Connector C is the fixed interface connector on all Moduline L1, L2, L3, L4 and L5 controllers.",
+    "connector_image": "/assets/modules/iv_con_c_system.png",
+    "pins": [
+      {
+        "pin": "C1",
+        "signal": "RESET",
+        "description": "Reset (active high)"
+      },
+      {
+        "pin": "C2",
+        "signal": "K15",
+        "description": "Contact 1 (active high)"
+      },
+      {
+        "pin": "C3",
+        "signal": "K15",
+        "description": "Contact 2 (active high)"
+      },
+      {
+        "pin": "C4",
+        "signal": "K15",
+        "description": "Contact 3 (active high)"
+      },
+      {
+        "pin": "C5",
+        "signal": "K30",
+        "description": "Supply"
+      },
+      {
+        "pin": "C6",
+        "signal": "K30",
+        "description": "Supply"
+      },
+      {
+        "pin": "C7",
+        "signal": "K30",
+        "description": "Supply"
+      },
+      {
+        "pin": "C8",
+        "signal": "LIN BUS",
+        "description": "LIN communication"
+      },
+      {
+        "pin": "C9",
+        "signal": "LIN SUP",
+        "description": "LIN supply"
+      },
+      {
+        "pin": "C10",
+        "signal": "LIN GND",
+        "description": "LIN ground"
+      },
+      {
+        "pin": "C11",
+        "signal": "CAN 4 GN",
+        "description": "Optional shielding"
+      },
+      {
+        "pin": "C12",
+        "signal": "CAN 4 HIG",
+        "description": "CAN high"
+      },
+      {
+        "pin": "C13",
+        "signal": "CAN 4 LO",
+        "description": "CAN low"
+      },
+      {
+        "pin": "C14",
+        "signal": "CAN 1 LO",
+        "description": "CAN low"
+      },
+      {
+        "pin": "C15",
+        "signal": "CAN 1 HIG",
+        "description": "CAN high"
+      },
+      {
+        "pin": "C16",
+        "signal": "CAN 1 GN",
+        "description": "Optional shielding"
+      },
+      {
+        "pin": "C17",
+        "signal": "CAN 3 GN",
+        "description": "Optional shielding"
+      },
+      {
+        "pin": "C18",
+        "signal": "CAN 3 HIG",
+        "description": "CAN high"
+      },
+      {
+        "pin": "C19",
+        "signal": "CAN 3 LO",
+        "description": "CAN low"
+      },
+      {
+        "pin": "C20",
+        "signal": "CAN 2 LO",
+        "description": "CAN low"
+      },
+      {
+        "pin": "C21",
+        "signal": "CAN 2 HIG",
+        "description": "CAN high"
+      },
+      {
+        "pin": "C22",
+        "signal": "CAN 2 GN",
+        "description": "Optional shielding"
+      },
+      {
+        "pin": "C23",
+        "signal": "NC",
+        "description": "Not connected"
+      },
+      {
+        "pin": "C24",
+        "signal": "K31",
+        "description": "Ground"
+      },
+      {
+        "pin": "C25",
+        "signal": "K31",
+        "description": "Ground"
+      },
+      {
+        "pin": "C26",
+        "signal": "K31",
+        "description": "Ground"
+      }
+    ]
+  },
+  "MMS": {
+    "platforms": [
+      "M1",
+      "M2"
+    ],
+    "connector_label": "Connectors A and B — Fixed system pins (34-pin per connector)",
+    "description": "On the Moduline M1, connectors A and B share space with the module slots.",
+    "connector_image": "/assets/modules/mini_con_ab.jpg",
+    "pins": [
+      {
+        "pin": "A16",
+        "signal": "K15",
+        "description": "Contact 2 (active high)"
+      },
+      {
+        "pin": "A17",
+        "signal": "K15",
+        "description": "Contact 3 (active high)"
+      },
+      {
+        "pin": "A24",
+        "signal": "CAN 2 LOW",
+        "description": "CAN low"
+      },
+      {
+        "pin": "A25",
+        "signal": "CAN 2 HIGH",
+        "description": "CAN high"
+      },
+      {
+        "pin": "B8",
+        "signal": "K30",
+        "description": "Supply"
+      },
+      {
+        "pin": "B9",
+        "signal": "K30",
+        "description": "Supply"
+      },
+      {
+        "pin": "B16",
+        "signal": "RESET",
+        "description": "Controller reset"
+      },
+      {
+        "pin": "B17",
+        "signal": "K15",
+        "description": "Contact 1 (active high)"
+      },
+      {
+        "pin": "B24",
+        "signal": "CAN 1 LOW",
+        "description": "CAN low"
+      },
+      {
+        "pin": "B25",
+        "signal": "CAN 1 HIGH",
+        "description": "CAN high"
+      },
+      {
+        "pin": "B33",
+        "signal": "K31",
+        "description": "Ground"
+      },
+      {
+        "pin": "B34",
+        "signal": "K31",
+        "description": "Ground"
+      }
+    ]
+  },
+  "MDS": {
+    "platforms": [
+      "HMI1",
+      "HMI2"
+    ],
+    "connector_label": "Connector A — Fixed system pins (34-pin)",
+    "description": "On the Moduline HMI1, connector A contains both the system pins and the two module slots (MDS1/MDS2).",
+    "connector_image": "/assets/modules/display_overview.jpg",
+    "pins": [
+      {
+        "pin": "A8",
+        "signal": "K30",
+        "description": "Supply"
+      },
+      {
+        "pin": "A9",
+        "signal": "K15",
+        "description": "Contact (active high)"
+      },
+      {
+        "pin": "A16",
+        "signal": "CAN 1 LOW",
+        "description": "CAN low"
+      },
+      {
+        "pin": "A17",
+        "signal": "CAN 1 HIG",
+        "description": "CAN high"
+      },
+      {
+        "pin": "A24",
+        "signal": "CAN 2 LOW",
+        "description": "CAN low"
+      },
+      {
+        "pin": "A25",
+        "signal": "CAN 2 HIG",
+        "description": "CAN high"
+      },
+      {
+        "pin": "A33",
+        "signal": "K31",
+        "description": "Ground"
+      },
+      {
+        "pin": "A34",
+        "signal": "K31",
+        "description": "Ground"
+      }
+    ]
+  }
+}

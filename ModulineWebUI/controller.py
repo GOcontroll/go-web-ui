@@ -7,6 +7,7 @@ from microdot.session import Session, with_session
 
 from ModulineWebUI.app import app, auth
 import ModulineWebUI.diag as diag
+import ModulineWebUI.handlers.modules as modules_handler
 from ModulineWebUI.handlers.service import (
     get_service,
     get_service_blacklist,
@@ -174,6 +175,67 @@ async def get_serial_number(req: Request, session: Session):
         return json.dumps({"err": f"Could not get the serial number\n{ex.output}"})
     except Exception as ex:
         return json.dumps({"err": f"Could not get the serial number\n{ex}"})
+
+
+# modules
+@app.get("/api/get_modules")
+@with_session
+@auth
+async def get_modules_route(req: Request, session: Session):
+    try:
+        modules = modules_handler.get_modules()
+    except FileNotFoundError:
+        return json.dumps({"err": "modules.json not found on this controller"})
+    except Exception as ex:
+        return json.dumps({"err": f"Could not read modules.json: {ex}"})
+    prefix, platform = modules_handler.get_slot_prefix()
+    return json.dumps({
+        "modules": modules,
+        "platform": platform,
+        "slot_prefix": prefix,
+        "platform_image": modules_handler.PLATFORM_IMAGE.get(prefix),
+    })
+
+
+@app.get("/api/get_modules_manifest")
+@with_session
+@auth
+async def get_modules_manifest_route(req: Request, session: Session):
+    manifest, err = modules_handler.fetch_manifest()
+    out = {}
+    if manifest is not None:
+        out["manifest"] = manifest
+    if err is not None:
+        out["err"] = err
+    return json.dumps(out)
+
+
+@app.get("/api/get_controller_pinning")
+@with_session
+@auth
+async def get_controller_pinning_route(req: Request, session: Session):
+    info = modules_handler.get_controller_pinning()
+    if info is None:
+        return json.dumps({"err": "No controller pinning data for this platform"})
+    return json.dumps(info)
+
+
+@app.get("/api/get_module_pinning")
+@with_session
+@auth
+async def get_module_pinning_route(req: Request, session: Session):
+    article = req.args.get("article", "")
+    slot_str = req.args.get("slot", "")
+    if not article or len(article) < 6 or not article[:6].isdigit():
+        return json.dumps({"err": "Invalid article"})
+    try:
+        slot = int(slot_str)
+    except (TypeError, ValueError):
+        return json.dumps({"err": "Invalid slot"})
+    pinning = modules_handler.get_pinning_for(article[:6], slot)
+    if pinning is None:
+        return json.dumps({"err": "No pinning data for this module type"})
+    return json.dumps(pinning)
 
 
 # errors

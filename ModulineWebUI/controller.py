@@ -8,6 +8,7 @@ from microdot.session import Session, with_session
 from ModulineWebUI.app import app, auth
 import ModulineWebUI.diag as diag
 import ModulineWebUI.handlers.modules as modules_handler
+import ModulineWebUI.handlers.parameters as parameters_handler
 from ModulineWebUI.handlers.service import (
     get_service,
     get_service_blacklist,
@@ -277,38 +278,51 @@ async def delete_errors(req: Request, session: Session):
     return json.dumps({})
 
 
-# parameters
-@app.get("/api/get_parameters")
+# Application configuration (/etc/gocontroll/config.json)
+@app.get("/api/get_app_config")
 @with_session
 @auth
-async def get_parameters(req: Request, session: Session):
+async def get_app_config_route(req: Request, session: Session):
     try:
-        parameters = []
-        files = sorted(os.listdir("/etc/go-simulink"))
-        for file in files:
-            with open(f"/etc/go-simulink/{file}", "r") as par:
-                parameters.append({"name": file, "val": par.readline().strip()})
-        return json.dumps(parameters)
+        return json.dumps({"config": parameters_handler.get_config()})
     except Exception as ex:
-        return json.dumps({"err": f"Could not get parameters\n{ex}"})
+        return json.dumps({"err": f"Could not read config: {ex}"})
 
 
-@app.post("/api/save_parameters")
+@app.post("/api/save_app_config")
 @with_session
 @auth
-async def save_parameters(req: Request, session: Session):
-    parameters = req.json
-    faulty = {"err": []}
-    for param in parameters:
-        if "/" in param["name"]:
-            continue
-        try:
-            float(param["val"])
-        except ValueError:
-            faulty["err"].append(param["name"])
-            continue
-        with open(f"/etc/go-simulink/{param['name']}", "w") as par:
-            par.write(param["val"])
-    if len(faulty["err"]):
-        return json.dumps(faulty), 400
+async def save_app_config_route(req: Request, session: Session):
+    data = req.json
+    if not isinstance(data, dict):
+        return json.dumps({"err": "Body must be an object of key/value pairs"})
+    try:
+        parameters_handler.save_config(data)
+    except Exception as ex:
+        return json.dumps({"err": f"Could not save config: {ex}"})
+    return json.dumps({})
+
+
+# Environment variables (/etc/gocontroll/parameters.js)
+@app.get("/api/get_env_parameters")
+@with_session
+@auth
+async def get_env_parameters_route(req: Request, session: Session):
+    try:
+        return json.dumps({"entries": parameters_handler.get_env_parameters()})
+    except Exception as ex:
+        return json.dumps({"err": f"Could not read parameters.js: {ex}"})
+
+
+@app.post("/api/save_env_parameters")
+@with_session
+@auth
+async def save_env_parameters_route(req: Request, session: Session):
+    entries = req.json
+    if not isinstance(entries, list):
+        return json.dumps({"err": "Body must be a list of {alias, env, value} objects"})
+    try:
+        parameters_handler.save_env_parameters(entries)
+    except Exception as ex:
+        return json.dumps({"err": f"Could not save parameters.js: {ex}"})
     return json.dumps({})

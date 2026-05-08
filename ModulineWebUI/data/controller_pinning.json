@@ -1,14 +1,12 @@
 {
   "M4S": {
     "platforms": [
-      "L1",
       "L2",
       "L3",
-      "L4",
-      "L5"
+      "L4"
     ],
     "connector_label": "Connector C — System connector (26-pin)",
-    "description": "Connector C is the fixed interface connector on all Moduline L1, L2, L3, L4 and L5 controllers.",
+    "description": "Connector C is the fixed interface connector on all Moduline L2, L3 and L4 controllers.",
     "connector_image": "/assets/modules/iv_con_c_system.png",
     "pins": [
       {
@@ -145,8 +143,7 @@
   },
   "MMS": {
     "platforms": [
-      "M1",
-      "M2"
+      "M1"
     ],
     "connector_label": "Connectors A and B — Fixed system pins (34-pin per connector)",
     "description": "On the Moduline M1, connectors A and B share space with the module slots.",
@@ -216,8 +213,7 @@
   },
   "MDS": {
     "platforms": [
-      "HMI1",
-      "HMI2"
+      "HMI1"
     ],
     "connector_label": "Connector A — Fixed system pins (34-pin)",
     "description": "On the Moduline HMI1, connector A contains both the system pins and the two module slots (MDS1/MDS2).",

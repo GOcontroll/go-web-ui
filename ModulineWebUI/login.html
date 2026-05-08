@@ -9,8 +9,8 @@
   <link rel="icon" type="image/png" media="(prefers-color-scheme: dark)" href="/assets/favicon-dark.png">
   <link rel="apple-touch-icon" href="/assets/favicon-large.png">
   <link rel="stylesheet" href="/style/login.css">
-  <script src="/js/common.js" defer></script>
-  <script src="/js/login.js" defer></script>
+  <script src="/js/common.js?v=2" defer></script>
+  <script src="/js/login.js?v=2" defer></script>
 </head>
 
 <body>
@@ -20,10 +20,10 @@
         <img src="/assets/logo.svg" alt="GOcontroll">
       </div>
       <h1>Sign in</h1>
-      <form id="loginForm" onsubmit="return try_login(event);">
+      <form id="loginForm">
         <div class="form-group">
-          <label for="passkey">Passkey</label>
-          <input type="password" id="passkey" name="passkey" placeholder="Enter passkey" autofocus required>
+          <label for="passkey">Password</label>
+          <input type="password" id="passkey" name="passkey" placeholder="Enter password" autofocus required>
         </div>
         <div class="btn-row" style="justify-content:center;margin-top:18px;">
           <button type="submit" class="btn primary" style="min-width:140px;">Log in</button>

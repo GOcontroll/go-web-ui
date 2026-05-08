@@ -239,6 +239,46 @@ async def get_module_pinning_route(req: Request, session: Session):
     return json.dumps(pinning)
 
 
+@app.get("/api/get_module_config")
+@with_session
+@auth
+async def get_module_config_route(req: Request, session: Session):
+    slot_str = req.args.get("slot", "")
+    try:
+        slot = int(slot_str)
+    except (TypeError, ValueError):
+        return json.dumps({"err": "Invalid slot"})
+    try:
+        return json.dumps(modules_handler.get_module_config(slot))
+    except FileNotFoundError:
+        return json.dumps({"err": "modules.json not found on this controller"})
+    except ValueError as ex:
+        return json.dumps({"err": str(ex)})
+    except Exception as ex:
+        return json.dumps({"err": f"Could not read module config: {ex}"})
+
+
+@app.post("/api/save_module_config")
+@with_session
+@auth
+async def save_module_config_route(req: Request, session: Session):
+    data = req.json
+    if not isinstance(data, dict):
+        return json.dumps({"err": "Body must be an object"})
+    slot = data.get("slot")
+    if not isinstance(slot, int):
+        return json.dumps({"err": "slot must be an integer"})
+    try:
+        modules_handler.save_module_config(slot, data)
+    except FileNotFoundError:
+        return json.dumps({"err": "modules.json not found on this controller"})
+    except ValueError as ex:
+        return json.dumps({"err": str(ex)})
+    except Exception as ex:
+        return json.dumps({"err": f"Could not save module config: {ex}"})
+    return json.dumps({})
+
+
 # errors
 @app.get("/api/get_errors")
 @with_session

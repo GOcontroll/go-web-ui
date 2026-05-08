@@ -89,7 +89,7 @@ async def login(req: Request, session: Session):
         session.save()
         return json.dumps("success")
     else:
-        return json.dumps({"err": "Incorrect passkey"})
+        return json.dumps({"err": "Incorrect password"})
 
 
 @app.post("/logout")
@@ -112,7 +112,7 @@ async def set_passkey_route(req: Request, session: Session):
     except FileNotFoundError or PermissionError as ex:
         return json.dumps(
             {
-                "err": "Could not save the new passkey, passkey unchanged",
+                "err": "Could not save the new password, password unchanged",
                 "deets": f"{ex}",
             }
         )

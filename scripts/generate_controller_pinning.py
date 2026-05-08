@@ -27,18 +27,22 @@ FAMILY_TO_SLOT_PREFIX = {
 }
 
 # The architecture documentation is in Dutch but the Web UI surfaces this text
-# verbatim in English. Override the parsed connector_label / description here so
-# regenerating from updated upstream markdown keeps the UI English.
+# verbatim in English. Override the parsed platforms / connector_label /
+# description here so regenerating from updated upstream markdown keeps the UI
+# in sync with the actually-shipping product line (L2/L3/L4, M1, HMI1).
 ENGLISH_OVERRIDES = {
     "M4S": {
+        "platforms": ["L2", "L3", "L4"],
         "connector_label": "Connector C — System connector (26-pin)",
-        "description": "Connector C is the fixed interface connector on all Moduline L1, L2, L3, L4 and L5 controllers.",
+        "description": "Connector C is the fixed interface connector on all Moduline L2, L3 and L4 controllers.",
     },
     "MMS": {
+        "platforms": ["M1"],
         "connector_label": "Connectors A and B — Fixed system pins (34-pin per connector)",
         "description": "On the Moduline M1, connectors A and B share space with the module slots.",
     },
     "MDS": {
+        "platforms": ["HMI1"],
         "connector_label": "Connector A — Fixed system pins (34-pin)",
         "description": "On the Moduline HMI1, connector A contains both the system pins and the two module slots (MDS1/MDS2).",
     },
@@ -136,7 +140,7 @@ def parse_controller_pinning(md: str) -> dict:
         overrides = ENGLISH_OVERRIDES.get(slot_prefix, {})
 
         out[slot_prefix] = {
-            "platforms": platforms,
+            "platforms": overrides.get("platforms", platforms),
             "connector_label": overrides.get("connector_label", connector_label),
             "description": overrides.get("description", description),
             "connector_image": connector_image,

@@ -21,7 +21,7 @@ const services_list = [
   ["gadget-getty@ttyGS0", "USB terminal", "Log in through the USB interface"],
   ["getty@ttymxc2", "Serial terminal", "Log in through the rs232 interface"],
   [
-    "go-webui",
+    "go-web-ui",
     "Web UI",
     "The service that runs this web interface. Disabling it will make this UI unreachable.",
   ],
@@ -58,7 +58,7 @@ async function set_service(service) {
   set_state.new_state = cb.checked;
   set_state.service = services_list[service][0];
   // Confirm before disabling the Web UI service itself, since that breaks access to this UI.
-  if (set_state.service === "go-webui" && !set_state.new_state) {
+  if (set_state.service === "go-web-ui" && !set_state.new_state) {
     if (!(await confirmDisableWebUi())) {
       cb.checked = true;
       return;

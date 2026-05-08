@@ -414,7 +414,7 @@ def fetch_manifest(force: bool = False):
             return data, None
 
     try:
-        req = urllib.request.Request(MANIFEST_URL, headers={"User-Agent": "go-webui"})
+        req = urllib.request.Request(MANIFEST_URL, headers={"User-Agent": "go-web-ui"})
         with urllib.request.urlopen(req, timeout=MANIFEST_TIMEOUT) as resp:
             payload = json.load(resp)
     except URLError as ex:

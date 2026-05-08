@@ -38,12 +38,12 @@ jobs:
 
           cp -r ModulineWebUI "${BUILD}/usr/lib/python3/dist-packages/"
 
-          cat > "${BUILD}/usr/bin/go-webui" << 'SCRIPT'
+          cat > "${BUILD}/usr/bin/go-web-ui" << 'SCRIPT'
           #!/usr/bin/python3
           from ModulineWebUI.__main__ import execute_script
           execute_script()
           SCRIPT
-          chmod 755 "${BUILD}/usr/bin/go-webui"
+          chmod 755 "${BUILD}/usr/bin/go-web-ui"
 
           cat > "${BUILD}/usr/bin/go-print-dtcs" << 'SCRIPT'
           #!/usr/bin/python3
@@ -52,8 +52,8 @@ jobs:
           SCRIPT
           chmod 755 "${BUILD}/usr/bin/go-print-dtcs"
 
-          install -Dm644 debian/go-webui.service \
-            "${BUILD}/usr/lib/systemd/system/go-webui.service"
+          install -Dm644 debian/go-web-ui.service \
+            "${BUILD}/usr/lib/systemd/system/go-web-ui.service"
 
           install -Dm644 debian/go_webui.conf \
             "${BUILD}/etc/go_webui.conf"
@@ -78,7 +78,7 @@ jobs:
           case "$1" in
               configure)
                   systemctl daemon-reload
-                  systemctl enable go-webui.service
+                  systemctl enable go-web-ui.service
                   ;;
           esac
           POSTINST
@@ -89,8 +89,8 @@ jobs:
           set -e
           case "$1" in
               remove|purge)
-                  systemctl stop go-webui.service || true
-                  systemctl disable go-webui.service || true
+                  systemctl stop go-web-ui.service || true
+                  systemctl disable go-web-ui.service || true
                   ;;
           esac
           PRERM

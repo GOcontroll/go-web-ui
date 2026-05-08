@@ -43,7 +43,7 @@ Set up a virtual environment and install in editable mode:
 python3 -m venv .venv
 source .venv/bin/activate
 pip install --editable ".[dev]"
-go-webui --passkey test
+go-web-ui --passkey test
 ```
 
 ## Changelog

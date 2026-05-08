@@ -59,8 +59,8 @@ def setup_logging():
 
 def get_args():
     parser = ArgumentParser(
-        prog="go-webui",
-        description="""go-webui\n
+        prog="go-web-ui",
+        description="""go-web-ui\n
         This program provides a web based interface for GOcontroll Moduline controllers""",
         epilog="Any argument passed will override the value set in /etc/go_webui.conf",
         add_help=True,

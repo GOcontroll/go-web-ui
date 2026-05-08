@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 RemainAfterExit=no
-ExecStart=/usr/bin/go-webui
+ExecStart=/usr/bin/go-web-ui
 
 [Install]
 WantedBy=multi-user.target

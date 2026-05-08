@@ -8,7 +8,7 @@ from urllib.error import URLError
 
 logger = logging.getLogger(__name__)
 
-MODULES_JSON_PATH = "/usr/lib/firmware/gocontroll/modules.json"
+MODULES_JSON_PATH = "/lib/firmware/gocontroll/modules.json"
 PLATFORM_PATH = "/sys/firmware/devicetree/base/platform"
 PINNING_JSON_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),

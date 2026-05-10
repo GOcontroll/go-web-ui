@@ -79,6 +79,7 @@ jobs:
               configure)
                   systemctl daemon-reload
                   systemctl enable go-web-ui.service
+                  systemctl try-restart go-web-ui.service
                   ;;
           esac
           POSTINST

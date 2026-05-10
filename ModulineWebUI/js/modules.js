@@ -537,7 +537,6 @@ function render_channel_table(pane, fields, channels) {
     tr.appendChild(numTd);
 
     let funcSelect = null;
-    const curFunc = ch.func || "disabled";
 
     for (const f of fields) {
       if (f.hidden) continue;
@@ -586,7 +585,7 @@ function render_channel_table(pane, fields, channels) {
 
     if (funcSelect) {
       const captured_tr = tr;
-      update_conditional_cells(captured_tr, curFunc, fields);
+      update_conditional_cells(captured_tr, funcSelect.value, fields);
       funcSelect.addEventListener("change", () => {
         update_conditional_cells(captured_tr, funcSelect.value, fields);
       });

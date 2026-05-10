@@ -40,7 +40,7 @@ MODULE_TYPE_NAMES = {
 # Shared enum lists used in MODULE_SCHEMAS.
 _FREQ_6CH   = ["100Hz", "200Hz", "500Hz", "1kHz", "2kHz", "5kHz", "10kHz"]
 _FUNC_INPUT = [
-    "disabled", "12bit_adc", "mv_analog", "digital_in",
+    "12bit_adc", "mv_analog", "digital_in",
     "frequency", "duty_low", "duty_high", "rpm", "pulse_counter",
 ]
 _FUNC_ANALOG   = ["12bit_adc", "mv_analog"]
@@ -49,7 +49,6 @@ _FUNC_FREQ_DEP = ["frequency", "duty_low", "duty_high", "rpm", "pulse_counter"]
 # Display labels — kept in sync with node-red-gocontroll/nodes/modules/*.html so
 # the same option text appears in both the Web UI and Node-RED.
 _FUNC_INPUT_LABELS = {
-    "disabled":      "Disabled",
     "12bit_adc":     "Analog input - decimal (12 bit resolution)",
     "mv_analog":     "Analog input - mV (1mV resolution)",
     "digital_in":    "Digital input - status (high or low)",
@@ -126,7 +125,7 @@ MODULE_SCHEMAS: "dict[str, dict]" = {
         },
         "channel_fields": [
             {"key": "name",                  "type": "string", "default": "",                            "label": "Name", "max_length": 32, "placeholder": "alias"},
-            {"key": "func",                  "type": "enum", "values": _FUNC_INPUT,                     "value_labels": _FUNC_INPUT_LABELS,    "default": "disabled", "label": "Function"},
+            {"key": "func",                  "type": "enum", "values": _FUNC_INPUT,                     "value_labels": _FUNC_INPUT_LABELS,    "default": "12bit_adc", "label": "Function"},
             {"key": "voltage_range",         "type": "enum", "values": ["5V", "12V", "24V"],            "value_labels": _VOLTAGE_RANGE_LABELS, "default": "5V",       "label": "Voltage Range"},
             {"key": "pull_up",               "type": "enum", "values": ["none", "3_3k", "4_7k", "10k"], "value_labels": _PULL_UP_LABELS_6CH,   "default": "none",     "label": "Pull Up"},
             {"key": "pull_down",             "type": "enum", "values": ["none", "3_3k", "4_7k", "10k"], "value_labels": _PULL_DOWN_LABELS_6CH, "default": "none",     "label": "Pull Down"},
@@ -142,7 +141,7 @@ MODULE_SCHEMAS: "dict[str, dict]" = {
         },
         "channel_fields": [
             {"key": "name",      "type": "string", "default": "",                       "label": "Name", "max_length": 32, "placeholder": "alias"},
-            {"key": "func",      "type": "enum", "values": _FUNC_INPUT,     "value_labels": _FUNC_INPUT_LABELS,     "default": "disabled", "label": "Function"},
+            {"key": "func",      "type": "enum", "values": _FUNC_INPUT,     "value_labels": _FUNC_INPUT_LABELS,     "default": "12bit_adc", "label": "Function"},
             {"key": "pull_up",   "type": "enum", "values": ["none", "10k"], "value_labels": _PULL_UP_LABELS_10CH,   "default": "none",     "label": "Pull Up"},
             {"key": "pull_down", "type": "enum", "values": ["none", "3_3k"],"value_labels": _PULL_DOWN_LABELS_10CH, "default": "none",     "label": "Pull Down"},
         ],

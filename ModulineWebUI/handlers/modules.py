@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 MODULES_JSON_PATH = "/lib/firmware/gocontroll/modules.json"
 PLATFORM_PATH = "/sys/firmware/devicetree/base/platform"
+HARDWARE_PATH = "/sys/firmware/devicetree/base/hardware"
 PINNING_JSON_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     "..", "data", "module_pinning.json",
@@ -461,30 +462,51 @@ def _load_pinning() -> dict:
         return _pinning_cache
 
 
-def _read_platform() -> str:
+def _read_dtb_string(path: str) -> str:
     try:
-        with open(PLATFORM_PATH, "r") as f:
+        with open(path, "r") as f:
             return f.read().strip("\x00 \t\n\r")
     except Exception:
         return ""
 
 
+def _classify(text: str) -> "str | None":
+    """Map a free-form DTB descriptor to a slot prefix, or None if unknown."""
+    low = text.lower()
+    if "m1" in low or "mini" in low:
+        return "MMS"
+    if "hmi" in low or "display" in low:
+        return "MDS"
+    if "l2" in low or "l3" in low or "l4" in low \
+            or "moduline iv" in low or "moduline v" in low:
+        return "M4S"
+    return None
+
+
 def get_slot_prefix() -> "tuple[str, str]":
     """
-    Return (slot_prefix, platform_string).
+    Return (slot_prefix, descriptor_string).
 
     slot_prefix matches the column names used in pinning.md:
       - M4S  -> Moduline IV / V / L4 (8 slots)
       - MMS  -> Moduline M1 (4 slots)
       - MDS  -> Moduline HMI1 / Display (2 slots)
-    Defaults to M4S when the platform string can't be classified.
+
+    Source order:
+      1. /sys/firmware/devicetree/base/platform  (>= 6.x kernels)
+      2. /sys/firmware/devicetree/base/hardware  (5.10 fallback — 'platform' node absent)
+      3. Default to M4S when neither string can be classified.
     """
-    plat = _read_platform()
-    low = plat.lower()
-    if "m1" in low or "mini" in low:
-        return "MMS", plat
-    if "hmi" in low or "display" in low:
-        return "MDS", plat
+    plat = _read_dtb_string(PLATFORM_PATH)
+    prefix = _classify(plat)
+    if prefix:
+        return prefix, plat
+
+    hw = _read_dtb_string(HARDWARE_PATH)
+    prefix = _classify(hw)
+    if prefix:
+        return prefix, hw or plat
+
     return "M4S", plat
 
 

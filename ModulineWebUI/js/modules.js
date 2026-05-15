@@ -1,5 +1,65 @@
 const CHEVRON_SVG = '<svg class="module-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>';
 
+// Warn before leaving the page (sidebar nav, refresh, close) when any open
+// configuration form has unsaved changes.
+window.addEventListener("beforeunload", (e) => {
+  if (document.querySelector('.mod-pane[data-config-dirty="1"]')) {
+    e.preventDefault();
+    e.returnValue = "";
+  }
+});
+
+function confirm_discard_if_dirty(pane) {
+  if (pane && pane.dataset.configDirty === "1") {
+    return confirm("Configuration has unsaved changes. Discard them?");
+  }
+  return true;
+}
+
+// Per-field save-state helpers. Each .ch-input / .ch-select carries a
+// `data-saved-value` reflecting the last value written to modules.json,
+// and a .clean / .dirty class so CSS can colour it green vs. orange.
+function _field_value(el) {
+  return el.type === "checkbox" ? (el.checked ? "1" : "0") : el.value;
+}
+function _mark_field_state(el) {
+  if (_field_value(el) === el.dataset.savedValue) {
+    el.classList.add("clean");
+    el.classList.remove("dirty");
+  } else {
+    el.classList.add("dirty");
+    el.classList.remove("clean");
+  }
+}
+function snapshot_config_fields(pane) {
+  for (const el of pane.querySelectorAll(".ch-input, .ch-select")) {
+    el.dataset.savedValue = _field_value(el);
+    _mark_field_state(el);
+  }
+}
+function update_pane_dirty(pane) {
+  pane.dataset.configDirty =
+    pane.querySelector(".ch-input.dirty, .ch-select.dirty") ? "1" : "0";
+}
+function revert_config_fields(pane) {
+  const reverted_funcs = [];
+  for (const el of pane.querySelectorAll(".ch-input.dirty, .ch-select.dirty")) {
+    if (el.type === "checkbox") {
+      el.checked = el.dataset.savedValue === "1";
+    } else {
+      el.value = el.dataset.savedValue;
+    }
+    _mark_field_state(el);
+    if (el.dataset.chKey === "func") reverted_funcs.push(el);
+  }
+  // Re-fire change on any reverted func selects so update_conditional_cells
+  // re-evaluates which channel cells should be enabled/disabled.
+  for (const el of reverted_funcs) {
+    el.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+  update_pane_dirty(pane);
+}
+
 function render_module_entry(m, manifest) {
   const entry = document.createElement("div");
   entry.className = "module-entry";
@@ -89,6 +149,12 @@ function render_module_entry(m, manifest) {
   if (!m.empty && m.recognised) {
     let setup_done = false;
     row.addEventListener("click", () => {
+      // About to collapse? Confirm if the config form has unsaved changes.
+      if (row.classList.contains("expanded")) {
+        const dirty_pane = details.querySelector('.mod-pane[data-config-dirty="1"]');
+        if (dirty_pane && !confirm_discard_if_dirty(dirty_pane)) return;
+        if (dirty_pane) revert_config_fields(dirty_pane);
+      }
       const expanded = row.classList.toggle("expanded");
       details.classList.toggle("hidden", !expanded);
       if (expanded && !setup_done) {
@@ -149,6 +215,10 @@ function setup_module_detail_tabs(detailsEl, m) {
   load_pinning(pinoutPane, m.article, m.slot);
 
   pinoutBtn.addEventListener("click", () => {
+    // Leaving the Configuration tab with unsaved changes?
+    if (!configPane.classList.contains("hidden")
+        && !confirm_discard_if_dirty(configPane)) return;
+    revert_config_fields(configPane);
     pinoutBtn.classList.add("active");
     configBtn.classList.remove("active");
     pinoutPane.classList.remove("hidden");
@@ -268,6 +338,7 @@ async function load_module_config(pane, slot) {
 
 function render_module_config(pane, cfg) {
   pane.textContent = "";
+  pane.dataset.configDirty = "0";
   const schema = cfg.schema;
   if (!schema) {
     const msg = document.createElement("div");
@@ -350,13 +421,28 @@ function render_module_config(pane, cfg) {
   const saveRow = document.createElement("div");
   saveRow.className = "mod-save-row";
   const saveBtn = document.createElement("button");
-  saveBtn.className = "btn";
+  saveBtn.className = "btn primary";
   saveBtn.textContent = "Save";
   const feedback = document.createElement("span");
   feedback.className = "mod-save-feedback";
   saveRow.appendChild(saveBtn);
   saveRow.appendChild(feedback);
   pane.appendChild(saveRow);
+
+  // Snapshot the freshly-rendered values; everything starts in the clean
+  // (green) state. On input/change we recolour the touched field and recompute
+  // the pane-level dirty flag — so reverting to the saved value also clears
+  // the unsaved-changes warning.
+  snapshot_config_fields(pane);
+  const mark_dirty = (e) => {
+    const tgt = e.target;
+    if (!tgt || !tgt.classList) return;
+    if (!tgt.classList.contains("ch-input") && !tgt.classList.contains("ch-select")) return;
+    _mark_field_state(tgt);
+    update_pane_dirty(pane);
+  };
+  pane.addEventListener("input", mark_dirty);
+  pane.addEventListener("change", mark_dirty);
 
   saveBtn.addEventListener("click", async () => {
     saveBtn.disabled = true;
@@ -383,6 +469,8 @@ function render_module_config(pane, cfg) {
       } else {
         feedback.className = "mod-save-feedback ok";
         feedback.textContent = "Saved";
+        snapshot_config_fields(pane);
+        pane.dataset.configDirty = "0";
         setTimeout(() => { if (feedback.textContent === "Saved") feedback.textContent = ""; }, 3000);
       }
     } catch (err) {

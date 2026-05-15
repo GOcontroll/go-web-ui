@@ -366,6 +366,18 @@
   text-align: center;
   width: 28px;
 }
+/* Tighten Name column and widen Function column so the longest function
+   labels (e.g. "Digital input - Duty cycle high time (0.1% resolution)") fit. */
+.channel-config-table td[data-field="name"] .ch-input  { max-width: 120px; }
+.channel-config-table td[data-field="func"] .ch-select { max-width: 360px; }
+
+/* Per-field save state: green = matches what's in modules.json,
+   orange = edited since last save. Disabled fields keep their grey look. */
+.mod-pane .ch-input.clean:not(:disabled),
+.mod-pane .ch-select.clean:not(:disabled)  { background: #e8f5e9; }
+.mod-pane .ch-input.dirty:not(:disabled),
+.mod-pane .ch-select.dirty:not(:disabled)  { background: var(--brand-light); }
+
 .ch-inactive { opacity: .35; }
 
 /* Save row */

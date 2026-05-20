@@ -1686,7 +1686,7 @@
     ]
   },
   "203003": {
-    "name": "Anleg IR Module",
+    "name": "IR Communication Module",
     "slots": [
       "M4S1",
       "M4S2",

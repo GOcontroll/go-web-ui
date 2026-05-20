@@ -148,19 +148,32 @@ _webui_version: "str | None" = None
 @with_session
 @auth
 async def get_webui_version(req: Request, session: Session):
-    """Return the installed go-web-ui Debian package version (cached)."""
+    """Return the running go-web-ui version (cached).
+
+    Primary source is `ModulineWebUI.__version__` — that constant is bumped
+    in lockstep with the git tag, so it reflects whatever code is actually
+    on disk (including `cp -r` deploys that bypass dpkg). Falls back to
+    `dpkg-query` only if the constant is missing, which would indicate a
+    very old install that pre-dates the runtime-version field.
+    """
     global _webui_version
     if _webui_version is None:
         try:
-            res = subprocess.run(
-                ["dpkg-query", "-W", "-f=${Version}", "go-web-ui"],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-            )
-            _webui_version = res.stdout.strip() if res.returncode == 0 else ""
+            from ModulineWebUI import __version__ as v
+            _webui_version = v
         except Exception:
-            _webui_version = ""
+            _webui_version = None
+        if not _webui_version:
+            try:
+                res = subprocess.run(
+                    ["dpkg-query", "-W", "-f=${Version}", "go-web-ui"],
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                _webui_version = res.stdout.strip() if res.returncode == 0 else ""
+            except Exception:
+                _webui_version = ""
     return json.dumps({"version": _webui_version})
 
 
@@ -256,6 +269,36 @@ async def get_module_config_route(req: Request, session: Session):
         return json.dumps({"err": str(ex)})
     except Exception as ex:
         return json.dumps({"err": f"Could not read module config: {ex}"})
+
+
+@app.post("/api/set_module_enabled")
+@with_session
+@auth
+async def set_module_enabled_route(req: Request, session: Session):
+    """Flip the per-slot `enabled` flag in modules.json.
+
+    Body: {"slot": <int>, "enabled": <bool>}.
+    Affects go-hardware-driver (>=0.2.0) — when false, the slot is left
+    completely untouched on the next driver start (no reset, no init, no tick).
+    """
+    data = req.json
+    if not isinstance(data, dict):
+        return json.dumps({"err": "Body must be an object"})
+    slot = data.get("slot")
+    enabled = data.get("enabled")
+    if not isinstance(slot, int):
+        return json.dumps({"err": "slot must be an integer"})
+    if not isinstance(enabled, bool):
+        return json.dumps({"err": "enabled must be a boolean"})
+    try:
+        modules_handler.set_module_enabled(slot, enabled)
+    except FileNotFoundError:
+        return json.dumps({"err": "modules.json not found on this controller"})
+    except ValueError as ex:
+        return json.dumps({"err": str(ex)})
+    except Exception as ex:
+        return json.dumps({"err": f"Could not update enabled flag: {ex}"})
+    return json.dumps({"enabled": enabled})
 
 
 @app.post("/api/save_module_config")

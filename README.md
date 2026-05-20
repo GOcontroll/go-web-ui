@@ -48,5 +48,17 @@ go-web-ui --passkey test
 
 ## Changelog
 
+### v2.2.0
+- Modules page now shows a per-slot "Driver" toggle in the Configuration tab.
+  When off, `go-hardware-driver` (>=0.2.0) leaves the module completely
+  untouched — no reset, no bootloader skip, no init, no cyclic I/O. Useful
+  when an external application wants to drive the module itself.
+- Added IR Communication Module (article 203003) configuration support:
+  J2799 protocol / IR emitter / RS pad selection, tank volume, receptacle
+  class, CAN-bitrate + functional-safety toggle, shared PWM frequency, and
+  two power-output channels with peak-and-hold parameters. Renames the
+  display label from "Anleg IR Module" to "IR Communication Module"
+  (Anleg is the integration use-case, not the module's own name).
+
 ### v1.3.0
 - Initial release on apt.gocontroll.com

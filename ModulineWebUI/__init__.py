@@ -14,6 +14,14 @@ trixie alike.
 import os
 import sys
 
+# Runtime version. Source of truth for what `/api/get_webui_version` returns
+# (and therefore what the UI footer shows). The CI workflow substitutes this
+# string with the git tag at build time so the .deb's Version, the apt repo
+# index and this constant always match — but committing the value here means
+# that ad-hoc deploys via `cp -r` still surface the correct version, instead
+# of inheriting whatever `dpkg -l go-web-ui` last installed.
+__version__ = "2.2.0"
+
 _VENDOR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_vendor")
 if _VENDOR not in sys.path:
     sys.path.insert(0, _VENDOR)

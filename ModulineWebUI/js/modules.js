@@ -336,9 +336,91 @@ async function load_module_config(pane, slot) {
   render_module_config(pane, resp);
 }
 
+function render_driver_toggle(pane, slot, initialEnabled) {
+  const section = document.createElement("div");
+  section.className = "mod-config-section";
+  section.textContent = "Hardware driver";
+  pane.appendChild(section);
+
+  const row = document.createElement("div");
+  row.className = "mod-config-row driver-row";
+
+  const lbl = document.createElement("label");
+  lbl.className = "mod-config-label";
+  lbl.textContent = "Driver controls slot";
+
+  const wrap = document.createElement("label");
+  wrap.className = "driver-toggle";
+  wrap.title = "When on, go-hardware-driver resets, initialises and drives "
+             + "this slot cyclically. When off, the module is left untouched "
+             + "so another application can drive it.";
+
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+  cb.checked = initialEnabled;
+
+  const slider = document.createElement("span");
+  slider.className = "driver-toggle-slider";
+
+  const stateText = document.createElement("span");
+  stateText.className = "driver-toggle-label";
+  stateText.textContent = cb.checked ? "Enabled" : "Disabled";
+
+  wrap.appendChild(cb);
+  wrap.appendChild(slider);
+  wrap.appendChild(stateText);
+
+  const feedback = document.createElement("span");
+  feedback.className = "mod-save-feedback";
+
+  cb.addEventListener("change", async () => {
+    const desired = cb.checked;
+    cb.disabled = true;
+    feedback.className = "mod-save-feedback";
+    feedback.textContent = "";
+    try {
+      const resp = await fetch("/api/set_module_enabled", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slot, enabled: desired }),
+      }).then(r => r.json());
+      if (resp.err) {
+        cb.checked = !desired;
+        feedback.className = "mod-save-feedback fail";
+        feedback.textContent = resp.err;
+      } else {
+        stateText.textContent = desired ? "Enabled" : "Disabled";
+        feedback.className = "mod-save-feedback ok";
+        feedback.textContent = "Saved — restart go-hardware-driver to apply";
+        setTimeout(() => {
+          if (feedback.classList.contains("ok")) feedback.textContent = "";
+        }, 4000);
+      }
+    } catch (err) {
+      cb.checked = !desired;
+      feedback.className = "mod-save-feedback fail";
+      feedback.textContent = `Save failed: ${err}`;
+    } finally {
+      cb.disabled = false;
+    }
+  });
+
+  row.appendChild(lbl);
+  row.appendChild(wrap);
+  row.appendChild(feedback);
+  pane.appendChild(row);
+}
+
 function render_module_config(pane, cfg) {
   pane.textContent = "";
   pane.dataset.configDirty = "0";
+
+  // Driver-enable toggle. Lives outside the dirty-state form: changes save
+  // immediately via /api/set_module_enabled so a half-finished edit elsewhere
+  // doesn't accidentally apply, and toggling never raises the "unsaved
+  // changes" warning.
+  render_driver_toggle(pane, cfg.slot, cfg.enabled !== false);
+
   const schema = cfg.schema;
   if (!schema) {
     const msg = document.createElement("div");

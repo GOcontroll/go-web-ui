@@ -34,7 +34,7 @@ MODULE_TYPE_NAMES = {
     "202001": "2 Channel Power Bridge Module",
     "202002": "6 Channel Output Module",
     "202003": "10 Channel Output Module",
-    "203003": "Anleg IR Module",
+    "203003": "IR Communication Module",
     "203004": "Multibus",
 }
 
@@ -197,6 +197,87 @@ MODULE_SCHEMAS: "dict[str, dict]" = {
             {"key": "freq", "type": "enum", "values": _FREQ_6CH, "value_labels": _FREQ_LABELS, "default": "100Hz", "label": "Frequency"},
         ],
     },
+    # IR Communication Module — 2 power-output channels + module-level
+    # J2799/CAN config. Field set + defaults from
+    # GOcontroll-Architecture/modules/ir-communication.md §3–4.
+    "ir-communication": {
+        "channel_count": 2,
+        "module_fields": {
+            "ir_output_type": {
+                "type": "enum",
+                "values": ["direct", "rs232", "rs485"],
+                "value_labels": {
+                    "direct": "Direct emitter control",
+                    "rs232":  "RS-232",
+                    "rs485":  "RS-485",
+                },
+                "default": "direct",
+                "label":   "IR Emitter",
+            },
+            "protocol_id": {
+                "type":   "enum",
+                "values": ["sae_j2799"],
+                "value_labels": {"sae_j2799": "SAE J2799"},
+                "default": "sae_j2799",
+                "label":   "Protocol ID",
+            },
+            "software_version": {
+                "type":   "enum",
+                "values": ["1.01", "1.10"],
+                "value_labels": {"1.01": "1.01", "1.10": "1.10"},
+                "default": "1.01",
+                "label":   "Software Version",
+            },
+            "tank_volume": {
+                "type": "int",
+                "min": 0, "max": 65535,
+                "default": 400,
+                "label": "Tank Volume",
+                "unit":  "L",
+            },
+            "receptable_type": {
+                "type":   "enum",
+                "values": ["h25", "h35", "h50", "h70"],
+                "value_labels": {"h25": "H25", "h35": "H35", "h50": "H50", "h70": "H70"},
+                "default": "h35",
+                "label":   "Receptable Type",
+            },
+            "can_active": {
+                "type":   "enum",
+                "values": ["off", "on"],
+                "value_labels": {"off": "CAN bus not active", "on": "CAN bus active"},
+                "default": "off",
+                "label":   "CAN Functional Safety",
+            },
+            "can_bitrate": {
+                "type":   "enum",
+                "values": ["125k", "250k", "500k", "1M"],
+                "value_labels": {
+                    "125k": "125 Kbps",
+                    "250k": "250 Kbps",
+                    "500k": "500 Kbps",
+                    "1M":   "1 Mbps",
+                },
+                "default": "250k",
+                "label":   "CAN Bitrate",
+            },
+            "frequency_pairs": {
+                "type":   "freq_pairs",
+                "length": 1,
+                "values": _FREQ_6CH,
+                "value_labels": _FREQ_LABELS,
+                "default": ["100Hz"],
+                "pair_labels": ["Channels 1+2"],
+                "label":   "PWM Frequency",
+            },
+        },
+        "channel_fields": [
+            {"key": "name",      "type": "string", "default": "", "label": "Name", "max_length": 32, "placeholder": "alias"},
+            {"key": "func",      "type": "enum",   "values": ["disabled", "halfbridge", "lowside_duty", "highside_duty", "lowside_bool", "highside_bool", "peak_and_hold", "frequency_out"], "value_labels": _FUNC_OUTPUT_6CH_LABELS, "default": "disabled", "label": "Function"},
+            {"key": "peak_duty", "type": "int",    "min": 0, "max": 1000,  "default": 1000, "label": "Peak Duty",  "unit": "‰",  "when_func": ["peak_and_hold"]},
+            {"key": "peak_time", "type": "int",    "min": 0, "max": 65535, "default": 500,  "label": "Peak Time",  "unit": "ms", "when_func": ["peak_and_hold"]},
+        ],
+    },
     "input-4-20ma": {
         "channel_count": 10,
         "module_fields": {
@@ -280,6 +361,12 @@ def _parse_slots_new_format(slots: list) -> list:
         fw_ver = entry.get("firmware_version", "")
         hw_ver = entry.get("hardware_version", "")
         recognised = bool(type_code) and bool(fw_ver)
+        # `enabled` controls whether go-hardware-driver (>=0.2.0) touches the
+        # module. Missing key defaults to True for backwards compatibility with
+        # modules.json files written by go-modules <3.2.0.
+        enabled = entry.get("enabled", True)
+        if not isinstance(enabled, bool):
+            enabled = True
         out.append({
             "slot": slot,
             "module_type": entry.get("module_type", ""),
@@ -287,6 +374,7 @@ def _parse_slots_new_format(slots: list) -> list:
             "qr_front": entry.get("qr_front", 0),
             "qr_back": entry.get("qr_back", 0),
             "raw_firmware": entry.get("firmware", ""),
+            "enabled": enabled,
             "empty": False,
             "recognised": recognised,
             "article": article,
@@ -358,16 +446,51 @@ def get_module_config(slot: int) -> dict:
                     if key not in module_data:
                         module_data[key] = spec.get("default")
 
+            # Default-true when the key is missing so modules.json files
+            # written by go-modules <3.2.0 surface as "driver enabled" in the UI.
+            enabled = entry.get("enabled", True)
+            if not isinstance(enabled, bool):
+                enabled = True
+
             return {
                 "slot": slot,
                 "module_type": module_type,
                 "label": entry.get("label", ""),
+                "enabled": enabled,
                 "module": module_data,
                 "channels": channels,
                 "schema": schema,
             }
 
     raise ValueError(f"Slot {slot} not found in modules.json")
+
+
+def set_module_enabled(slot: int, enabled: bool) -> None:
+    """Flip the `enabled` flag on one slot in modules.json atomically.
+
+    The hardware driver (go-hardware-driver >=0.2.0) re-reads this on startup
+    and leaves the slot completely untouched while it is false.
+
+    Raises FileNotFoundError when modules.json is absent, ValueError when the
+    file uses the old format or the slot is not present.
+    """
+    with open(MODULES_JSON_PATH, "r") as fh:
+        data = json.load(fh)
+
+    if not (isinstance(data, dict) and "slots" in data):
+        raise ValueError("Module enable toggling requires the new modules.json format")
+
+    for entry in data["slots"]:
+        if entry.get("slot") == slot:
+            entry["enabled"] = bool(enabled)
+            break
+    else:
+        raise ValueError(f"Slot {slot} not found in modules.json")
+
+    tmp = MODULES_JSON_PATH + ".tmp"
+    with open(tmp, "w") as fh:
+        json.dump(data, fh, indent=2)
+    os.replace(tmp, MODULES_JSON_PATH)
 
 
 def save_module_config(slot: int, payload: dict) -> None:

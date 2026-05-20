@@ -36,6 +36,12 @@ jobs:
                    "${BUILD}/etc" \
                    "${DIST}"
 
+          # Pin the runtime version field to the tag so /api/get_webui_version
+          # (and therefore the UI footer) always matches the .deb Version, even
+          # if the committed __version__ string lags behind a release.
+          sed -i "s/^__version__ = .*/__version__ = \"${VERSION}\"/" \
+            ModulineWebUI/__init__.py
+
           cp -r ModulineWebUI "${BUILD}/usr/lib/python3/dist-packages/"
 
           cat > "${BUILD}/usr/bin/go-web-ui" << 'SCRIPT'

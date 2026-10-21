@@ -19,7 +19,12 @@ CONTROLLER_PINNING_JSON_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     "..", "data", "controller_pinning.json",
 )
-MANIFEST_URL = "https://firmware.gocontroll.com/modules/manifest.json"
+# In order of preference. Both hosts serve the same R2 bucket (gocontroll-firmware), byte for
+# byte; firmware.gocontroll.com is the fallback while device traffic moves to gocontroll.tech.
+MANIFEST_URLS = (
+    "https://firmware.gocontroll.tech/modules/manifest.json",
+    "https://firmware.gocontroll.com/modules/manifest.json",
+)
 MANIFEST_CACHE_TTL = 300  # seconds
 MANIFEST_TIMEOUT = 5
 
@@ -536,16 +541,22 @@ def fetch_manifest(force: bool = False):
         if (not force) and data is not None and (now - ts) < MANIFEST_CACHE_TTL:
             return data, None
 
-    try:
-        req = urllib.request.Request(MANIFEST_URL, headers={"User-Agent": "go-web-ui"})
-        with urllib.request.urlopen(req, timeout=MANIFEST_TIMEOUT) as resp:
-            payload = json.load(resp)
-    except URLError as ex:
-        logger.info("Manifest fetch failed (no internet?): %s", ex)
-        return data, f"Manifest unreachable: {ex.reason if hasattr(ex, 'reason') else ex}"
-    except Exception as ex:
-        logger.error("Manifest fetch failed: %s", ex)
-        return data, f"Manifest fetch failed: {ex}"
+    payload = None
+    error = None
+    for url in MANIFEST_URLS:
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "go-web-ui"})
+            with urllib.request.urlopen(req, timeout=MANIFEST_TIMEOUT) as resp:
+                payload = json.load(resp)
+            break
+        except URLError as ex:
+            logger.info("Manifest fetch from %s failed (no internet?): %s", url, ex)
+            error = f"Manifest unreachable: {ex.reason if hasattr(ex, 'reason') else ex}"
+        except Exception as ex:
+            logger.error("Manifest fetch from %s failed: %s", url, ex)
+            error = f"Manifest fetch failed: {ex}"
+    if payload is None:
+        return data, error
 
     by_article = {}
     for item in payload.get("modules", []):

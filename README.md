@@ -48,6 +48,12 @@ go-web-ui --passkey test
 
 ## Changelog
 
+### v2.2.1
+- Modules page: the latest-firmware manifest is fetched from
+  `firmware.gocontroll.tech` first, with `firmware.gocontroll.com` as fallback
+  (both serve the same R2 bucket; `MANIFEST_URLS` in `handlers/modules.py`).
+  Was `firmware.gocontroll.com` only. The summary line no longer names a host.
+
 ### v2.2.0
 - Modules page now shows a per-slot "Driver" toggle in the Configuration tab.
   When off, `go-hardware-driver` (>=0.2.0) leaves the module completely

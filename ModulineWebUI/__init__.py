@@ -20,7 +20,7 @@ import sys
 # index and this constant always match — but committing the value here means
 # that ad-hoc deploys via `cp -r` still surface the correct version, instead
 # of inheriting whatever `dpkg -l go-web-ui` last installed.
-__version__ = "2.2.0"
+__version__ = "2.2.1"
 
 _VENDOR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_vendor")
 if _VENDOR not in sys.path:

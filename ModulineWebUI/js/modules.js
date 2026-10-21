@@ -886,7 +886,7 @@ async function render_modules() {
       ? "Could not refresh latest firmware versions; showing cached data."
       : "No internet — cannot check for module firmware updates.";
   } else if (manifest) {
-    summaryEl.textContent = "Latest firmware versions retrieved from firmware.gocontroll.com. Click a module for details.";
+    summaryEl.textContent = "Latest firmware versions retrieved from the GOcontroll firmware server. Click a module for details.";
   } else {
     summaryEl.textContent = "Click a module for connector pinout and configuration.";
   }

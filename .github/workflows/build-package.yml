@@ -84,7 +84,13 @@ jobs:
           case "$1" in
               configure)
                   systemctl daemon-reload
-                  systemctl enable go-web-ui.service
+                  # Enable on a first install only ($2, the previously
+                  # configured version, is empty). On an upgrade the service
+                  # keeps the state it had: disabled stays disabled, and only
+                  # a running service is restarted.
+                  if [ -z "$2" ]; then
+                      systemctl enable go-web-ui.service
+                  fi
                   systemctl try-restart go-web-ui.service
                   ;;
           esac
@@ -96,8 +102,9 @@ jobs:
           set -e
           case "$1" in
               remove|purge)
+                  # Stop only. The enable links stay until purge, so a
+                  # reinstall after a remove comes back in the same state.
                   systemctl stop go-web-ui.service || true
-                  systemctl disable go-web-ui.service || true
                   ;;
           esac
           PRERM
@@ -108,6 +115,8 @@ jobs:
           set -e
           case "$1" in
               purge)
+                  find /etc/systemd/system -type l -path '*.wants/*' \
+                      -name go-web-ui.service -delete 2>/dev/null || true
                   systemctl daemon-reload || true
                   ;;
           esac

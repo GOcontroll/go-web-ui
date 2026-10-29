@@ -48,6 +48,12 @@ go-web-ui --passkey test
 
 ## Changelog
 
+### v2.2.2
+- Package: `go-web-ui.service` is enabled on a first install only. An upgrade
+  keeps the state the service had, so a disabled web UI stays disabled; only a
+  running one is restarted. `apt remove` no longer disables the service, so a
+  reinstall comes back in the same state; `purge` removes the enable links.
+
 ### v2.2.1
 - Modules page: the latest-firmware manifest is fetched from
   `firmware.gocontroll.tech` first, with `firmware.gocontroll.com` as fallback
